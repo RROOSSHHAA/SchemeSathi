@@ -141,9 +141,6 @@ SchemeSathi/
    ```
    Frontend will run at: `http://localhost:5173`
 
-### 4. Deploy the Frontend to Netlify
-The root `netlify.toml` builds the Vite app from `frontend/`, rewrites client-side routes to `index.html`, and sets `VITE_API_BASE_URL` to the Render backend. Update that value in `netlify.toml` if the backend URL changes.
-
 ---
 
 ## 🔒 Security Principles
