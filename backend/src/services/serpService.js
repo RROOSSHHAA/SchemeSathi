@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { env, serviceStatus } from '../config/env.js';
 import { FALLBACK_CSC_CENTERS } from './demoShield.js';
+import { normalizeOfficialSearchResult } from './officialSources.js';
 
 /**
  * Searches nearest Common Service Centres (CSC / Jan Seva Kendra) using SerpApi Google Maps Engine
@@ -69,69 +70,31 @@ export async function findOfficialSchemePDF(schemeTitle) {
   }
 }
 
-function getOfficialHost(url) {
-  try {
-    const parsedUrl = new URL(url);
-    const hostname = parsedUrl.hostname.toLowerCase();
-
-    if (parsedUrl.protocol !== 'https:') return null;
-    if (!hostname.endsWith('.gov.in') && !hostname.endsWith('.nic.in')) return null;
-
-    return hostname;
-  } catch {
-    return null;
-  }
-}
-
-export function filterRecentSchemeResults(results, currentYear = new Date().getFullYear()) {
-  const seenUrls = new Set();
-
-  return (results || [])
-    .map((result) => {
-      const source = getOfficialHost(result.link);
-      if (!source) return null;
-
-      const title = result.title?.trim();
-      const snippet = (result.snippet || result.description || '').trim();
-      if (!title) return null;
-
-      const searchableText = `${title} ${snippet} ${result.date || ''}`;
-      if (!/\b(scheme|yojana|programme|program|initiative)\b|योजना/i.test(searchableText)) return null;
-      if (!/\b(new|newly|recent|launch|launched|announce|announced|introduc|introduced|approved|rollout|rolled out)\b|20\d{2}/i.test(searchableText)) return null;
-
-      const launchYear = searchableText.match(/\b(?:launched|started|introduced|approved|announced)\b[^.]{0,60}\b(20\d{2})\b/i);
-      if (launchYear && Number(launchYear[1]) < currentYear - 1) return null;
-      if (seenUrls.has(result.link)) return null;
-
-      seenUrls.add(result.link);
-      return {
-        title,
-        url: result.link,
-        source,
-        snippet,
-        date: result.date || null
-      };
-    })
-    .filter(Boolean)
-    .slice(0, 3);
-}
-
-export async function searchLatestGovernmentSchemes(currentYear = new Date().getFullYear()) {
+export async function searchQuestionWithSerpApi(query) {
   if (!serviceStatus.serpApi) {
-    return { available: false, results: [] };
+    return { configured: false, results: [] };
   }
 
   const response = await axios.get('https://serpapi.com/search.json', {
     params: {
       engine: 'google',
-      q: `newly launched or announced government schemes India ${currentYear} official site:pib.gov.in OR site:gov.in OR site:nic.in`,
+      q: query,
       api_key: env.SERPAPI_KEY
     },
     timeout: 7000
   });
 
   return {
-    available: true,
-    results: filterRecentSchemeResults(response.data.organic_results, currentYear)
+    configured: true,
+    results: (Array.isArray(response.data?.organic_results) ? response.data.organic_results : [])
+      .map(result => normalizeOfficialSearchResult({
+        title: result.title,
+        url: result.link,
+        snippet: result.snippet || result.description,
+        date: result.date,
+        provider: 'SerpAPI'
+      }))
+      .filter(Boolean)
+      .slice(0, 5)
   };
 }

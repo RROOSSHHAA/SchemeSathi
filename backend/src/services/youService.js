@@ -1,5 +1,41 @@
 import axios from 'axios';
 import { env, serviceStatus } from '../config/env.js';
+import { normalizeOfficialSearchResult } from './officialSources.js';
+
+export async function searchQuestionWithYouCom(query) {
+  if (!serviceStatus.youSearch) {
+    return { configured: false, results: [] };
+  }
+
+  const response = await axios.get('https://api.ydc-index.io/search', {
+    params: { query },
+    headers: {
+      'X-API-Key': env.YDC_API_KEY
+    },
+    timeout: 7000
+  });
+
+  const hits = Array.isArray(response.data?.hits) ? response.data.hits : [];
+  return {
+    configured: true,
+    results: hits
+      .map((hit) => {
+        const snippets = Array.isArray(hit.snippets)
+          ? hit.snippets.join(' ')
+          : hit.snippets || '';
+
+        return normalizeOfficialSearchResult({
+          title: hit.title,
+          url: hit.url,
+          snippet: snippets || hit.description || '',
+          date: hit.date,
+          provider: 'You.com'
+        });
+      })
+      .filter(Boolean)
+      .slice(0, 5)
+  };
+}
 
 /**
  * Verifies scheme eligibility and benefits using You.com Web Search API
