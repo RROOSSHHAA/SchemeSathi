@@ -25,7 +25,7 @@ describe('SchemeSathi evidence-based chat', () => {
 
   test('builds question-specific search text for both regular and latest-scheme questions', () => {
     assert.match(buildGovernmentSearchQuery('PM Kisan installment status', 'GENERAL_QUERY'), /PM Kisan installment status/);
-    assert.match(buildGovernmentSearchQuery('Koi new scheme aai he?', 'NEW_SCHEMES'), /recently launched government schemes/i);
+    assert.match(buildGovernmentSearchQuery('Koi new scheme aai he?', 'NEW_SCHEMES'), /site:pib\.gov\.in OR site:gov\.in/);
   });
 
   test('collects results from both providers and deduplicates identical official links', async () => {
@@ -80,7 +80,7 @@ describe('SchemeSathi evidence-based chat', () => {
         source: 'www.pib.gov.in',
         snippet: 'A new support scheme was announced for eligible farmers.'
       }]
-    });
+    }, 'NEW_SCHEMES');
 
     assert.match(answer.text, /New Farmer Support Scheme/);
     assert.match(answer.text, /eligible farmers/);
@@ -98,7 +98,7 @@ describe('SchemeSathi evidence-based chat', () => {
         source: 'www.pib.gov.in',
         snippet: 'Newly launched programmes for eligible households.'
       }]
-    });
+    }, 'NEW_SCHEMES');
 
     assert.match(answer.text, /Recently Announced Government Schemes/);
     assert.equal(answer.citations.length, 1);
@@ -117,6 +117,21 @@ describe('SchemeSathi evidence-based chat', () => {
 
     assert.match(answer.text, /relevant jawab nahi mila/i);
     assert.doesNotMatch(answer.text, /Aadhaar|income certificate|bank statement/i);
+    assert.deepEqual(answer.citations, []);
+  });
+
+  test('does not present a general schemes directory as a newly launched scheme', () => {
+    const answer = buildQuestionAnswer('Koi new scheme aai he?', {
+      sourceStatus: { youcom: 'unconfigured', serpapi: 'ok' },
+      results: [{
+        title: 'Schemes | My Government',
+        url: 'https://www.india.gov.in/my-government/schemes',
+        source: 'www.india.gov.in',
+        snippet: 'Information on various government schemes for citizens.'
+      }]
+    }, 'NEW_SCHEMES');
+
+    assert.match(answer.text, /koi aisi nayi ya haal hi mein announced yojana verify nahi hui/i);
     assert.deepEqual(answer.citations, []);
   });
 

@@ -21,7 +21,7 @@ export function buildGovernmentSearchQuery(question, intent) {
   const normalizedQuestion = question.trim().replace(/\s+/g, ' ').slice(0, 400);
 
   if (intent === 'NEW_SCHEMES') {
-    return `recently launched government schemes India ${currentYear} ${normalizedQuestion} official`;
+    return `${normalizedQuestion} newly launched recently announced government schemes India ${currentYear} site:pib.gov.in OR site:gov.in OR site:nic.in`;
   }
 
   return `${normalizedQuestion} India government scheme official`;
@@ -97,7 +97,16 @@ function includesQuestionTerm(contentTerms, term) {
   return aliases.some(alias => contentTerms.has(normalizeTerm(alias)));
 }
 
-function rankResults(question, results) {
+function hasRecentSchemeSignal(result) {
+  const searchTerms = getTerms(`${result.title} ${result.snippet} ${result.date || ''}`);
+  const currentYear = new Date().getFullYear();
+  const recentYear = new Set([String(currentYear), String(currentYear - 1)]);
+
+  return includesQuestionTerm(searchTerms, 'new') ||
+    [...searchTerms].some(term => recentYear.has(term));
+}
+
+function rankResults(question, results, intent) {
   const questionTerms = getQuestionTerms(question);
 
   return results
@@ -113,21 +122,26 @@ function rankResults(question, results) {
 
       return { result, index, score };
     })
-    .filter(item => questionTerms.size === 0 || item.score > 0)
+    .filter(item =>
+      (questionTerms.size === 0 || item.score > 0) &&
+      (intent !== 'NEW_SCHEMES' || hasRecentSchemeSignal(item.result))
+    )
     .sort((left, right) => right.score - left.score || left.index - right.index)
     .slice(0, 4)
     .map(item => item.result);
 }
 
-export function buildQuestionAnswer(question, evidence) {
-  const relevantResults = rankResults(question, evidence.results || []);
+export function buildQuestionAnswer(question, evidence, intent = 'GENERAL_QUERY') {
+  const relevantResults = rankResults(question, evidence.results || [], intent);
   if (!relevantResults.length) {
     const statuses = Object.values(evidence.sourceStatus || {});
     const allUnconfigured = statuses.length > 0 && statuses.every(status => status === 'unconfigured');
     const anyError = statuses.includes('error');
     const searchCompleted = statuses.some(status => status === 'ok' || status === 'no_results');
 
-    let text = 'Official sources par is sawal ka relevant jawab nahi mila. Main bina source ke andaza nahi lagaunga; scheme ka naam ya apna state batakar dobara poochhein.';
+    let text = intent === 'NEW_SCHEMES'
+      ? 'Available official search results mein koi aisi nayi ya haal hi mein announced yojana verify nahi hui jise main confirmed new scheme keh sakun. General scheme directory ko nayi scheme nahi maanunga; apna state ya category batakar poochhein.'
+      : 'Official sources par is sawal ka relevant jawab nahi mila. Main bina source ke andaza nahi lagaunga; scheme ka naam ya apna state batakar dobara poochhein.';
     if (allUnconfigured) {
       text = 'Live official search abhi configure nahi hai, isliye main verified jawab nahi de sakta. Backend mein You.com aur SerpAPI credentials configure karne honge.';
     } else if (anyError && !searchCompleted) {

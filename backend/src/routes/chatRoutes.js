@@ -116,7 +116,7 @@ router.post('/multi-agent', async (req, res, next) => {
       ];
     } else {
       const evidence = await collectQuestionEvidence(query, intent);
-      const answer = buildQuestionAnswer(query, evidence);
+      const answer = buildQuestionAnswer(query, evidence, intent);
       citations = answer.citations;
       sourceStatus = evidence.sourceStatus;
 
