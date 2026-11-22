@@ -1,7 +1,8 @@
 import express from 'express';
 import { verifySchemeWithYouCom } from '../services/youService.js';
-import { getNearestCSCCenters } from '../services/serpService.js';
+import { getNearestCSCCenters, searchLatestGovernmentSchemes } from '../services/serpService.js';
 import { issueNexconnToken } from '../services/nexconnService.js';
+import { buildLatestSchemesAnswer, classifyIntent } from '../services/chatIntent.js';
 import { supabase } from '../config/supabase.js';
 
 const router = express.Router();
@@ -80,43 +81,6 @@ router.get('/nexconn/volunteers', async (req, res, next) => {
 });
 
 /**
- * Smart Intent Classifier for SchemeSathi AI Council
- */
-function classifyIntent(text) {
-  const lower = (text || '').toLowerCase().trim();
-
-  // 1. Greetings
-  if (/^(hi|hello|hey|namaste|pranam|salam|kese ho|kaise ho|help|shuru|start|good morning|good evening)\b/i.test(lower) || lower.length <= 4) {
-    return 'GREETING';
-  }
-
-  // 2. CSC / Location / Offline
-  if (/csc|kendra|centre|center|seva kendra|offline|pincode|address|location|kahan|kaha jana|biometric/i.test(lower)) {
-    return 'LOCATION_CSC';
-  }
-
-  // 3. Bank / Rejection / Bribe / Practical tips
-  if (/bank|manager|guarantor|security|collateral|bribe|ghoos|rejection|delay|kitna time|real|experience/i.test(lower)) {
-    return 'BENEFICIARY_EXPERIENCE';
-  }
-
-  // 4. Specific Schemes
-  if (/mudra|shishu|tarun|kishor/i.test(lower)) return 'SCHEME_MUDRA';
-  if (/ayushman|pmjay|health|golden card|ilaj|bimari/i.test(lower)) return 'SCHEME_AYUSHMAN';
-  if (/kisan|farmer|kheti|dbt|6000/i.test(lower)) return 'SCHEME_PMKISAN';
-  if (/svanidhi|vendor|thela|street vendor/i.test(lower)) return 'SCHEME_SVANIDHI';
-  if (/scholarship|student|fees|college|padhai/i.test(lower)) return 'SCHEME_SCHOLARSHIP';
-  if (/lakhpati|didi|mahila|women|shg/i.test(lower)) return 'SCHEME_WOMEN';
-
-  // 5. General Eligibility / Documents
-  if (/document|documents|kagaz|eligibility|yogyata|kaise|how to apply|apply|registration/i.test(lower)) {
-    return 'DOCUMENTS_ELIGIBILITY';
-  }
-
-  return 'GENERAL_QUERY';
-}
-
-/**
  * POST /api/v1/chat/multi-agent
  */
 router.post('/multi-agent', async (req, res, next) => {
@@ -138,6 +102,22 @@ router.post('/multi-agent', async (req, res, next) => {
           themeColor: 'cyan',
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           text: `Namaste! 🙏 Main Priya Sharma, SchemeSathi Government Welfare Desk se. Aap kis yojana ke baare me jaankari chahte hain? Jaise:\n\n• **PM Mudra Loan** (₹50,000 bina collateral ke)\n• **Ayushman Bharat** (₹5 Lakh free health cover)\n• **PM Kisan Nidhi** (₹6,000 direct bank transfer)\n• **Post-Matric Scholarships** (Students ke liye tuition reimbursement)\n\nAap apna sawal yahan likh sakte hain!`
+        }
+      ];
+    } else if (intent === 'NEW_SCHEMES') {
+      const searchResult = await searchLatestGovernmentSchemes();
+      const answer = buildLatestSchemesAnswer(searchResult);
+      citations = answer.citations;
+
+      councilResponses = [
+        {
+          id: `msg-${Date.now()}-1`,
+          sender: 'Priya Sharma',
+          role: 'Compliance & Verification Officer',
+          avatarBadge: '🛡️ Officer',
+          themeColor: 'cyan',
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          text: answer.text
         }
       ];
     } else if (intent === 'LOCATION_CSC') {

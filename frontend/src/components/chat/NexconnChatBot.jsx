@@ -3,9 +3,7 @@ import {
   MessageSquare, X, Send, Bot, Sparkles, ShieldCheck, 
   CheckCircle2, MapPin, ExternalLink, Trash2, User, ChevronDown 
 } from 'lucide-react';
-import axios from 'axios';
-
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api/v1';
+import api from '../../services/api.js';
 
 export default function NexconnChatBot() {
   const [isOpen, setIsOpen] = useState(false);
@@ -69,16 +67,16 @@ export default function NexconnChatBot() {
 
     try {
       // Call backend multi-agent orchestration
-      const res = await axios.post(`${API_BASE}/chat/multi-agent`, {
+      const res = await api.post('/chat/multi-agent', {
         schemeTitle: query,
         userMessage: query,
         pincode: '400072'
       });
 
-      if (res.data?.success && res.data?.messages) {
+      if (res?.success && Array.isArray(res.messages) && res.messages.length > 0) {
         // Stream council responses sequentially
-        const newCouncilMsgs = res.data.messages;
-        const citations = res.data.citations || [];
+        const newCouncilMsgs = res.messages;
+        const citations = res.citations || [];
 
         for (let i = 0; i < newCouncilMsgs.length; i++) {
           await new Promise(resolve => setTimeout(resolve, i === 0 ? 600 : 1200));
@@ -99,25 +97,23 @@ export default function NexconnChatBot() {
           };
           setMessages(prev => [...prev, formattedMsg]);
         }
+      } else {
+        throw new Error('Chat service returned no answer');
       }
     } catch (err) {
-      console.warn('Chat API error, loading local council fallback:', err.message);
-      // Fallback response
-      setTimeout(() => {
-        setMessages(prev => [
-          ...prev,
-          {
-            id: `fallback-${Date.now()}`,
-            sender: 'Priya Sharma (Offline Shield)',
-            role: 'Compliance & Verification',
-            avatar: '🛡️',
-            color: 'border-l-4 border-l-blue-500 bg-blue-50/50',
-            text: `Yojana ki jankari ke liye mandatory documents: 1. Aadhaar Card (Linked mobile), 2. Bank Passbook/Statement (6 Months), 3. Income proof. Application fee ₹0 hai!`,
-            citations: [{ citation_id: '[[1]]', source: 'myscheme.gov.in', url: 'https://myscheme.gov.in' }],
-            time: 'Just now'
-          }
-        ]);
-      }, 500);
+      console.warn('Chat API error:', err.message);
+      setMessages(prev => [
+        ...prev,
+        {
+          id: `fallback-${Date.now()}`,
+          sender: 'SchemeSathi Sahayak',
+          role: 'Service status',
+          avatar: 'ℹ️',
+          color: 'border-l-4 border-l-amber-500 bg-amber-50/50',
+          text: 'Abhi aapke sawal ka verified jawab nahi mil paaya. Kripya thodi der baad dobara try karein; main bina official source ke scheme ya eligibility ka daawa nahi karunga.',
+          time: 'Just now'
+        }
+      ]);
     } finally {
       setIsTyping(false);
     }
@@ -125,7 +121,7 @@ export default function NexconnChatBot() {
 
   const handlePurgeVault = async () => {
     try {
-      await axios.delete(`${API_BASE}/vault/purge`, { data: { sessionId: 'current-session' } });
+      await api.delete('/vault/purge', { data: { sessionId: 'current-session' } });
       setVaultPurged(true);
       setTimeout(() => setVaultPurged(false), 4000);
     } catch (e) {

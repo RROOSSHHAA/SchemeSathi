@@ -299,18 +299,19 @@ export default function NexconnChatModal({ isOpen, onClose, initialScheme = null
           pincode: '400072'
         });
 
-        let replyText = '';
-        if (councilRes.success && councilRes.messages) {
-          if (activePersona.id === 'mentor_priya_compliance') {
-            replyText = councilRes.messages.find(m => m.id.includes('priya'))?.text || councilRes.messages[0].text;
-          } else if (activePersona.id === 'mentor_ramesh_beneficiary') {
-            replyText = councilRes.messages.find(m => m.id.includes('ramesh'))?.text || councilRes.messages[1].text;
-          } else {
-            replyText = councilRes.messages.find(m => m.id.includes('anand'))?.text || councilRes.messages[2].text;
-          }
-        } else {
-          replyText = `Thank you for your inquiry regarding "${text}". As per Maharashtra DBT norms, make sure your Aadhaar-linked bank account has active NPCI seeding for direct subsidy credit without intermediary delays.`;
+        const councilMessages = councilRes?.messages || [];
+        const personaName = activePersona.name.split(' ')[0].toLowerCase();
+        const selectedMessage = councilMessages.find(message => message.sender?.toLowerCase().includes(personaName)) || councilMessages[0];
+        if (!councilRes?.success || !selectedMessage?.text) {
+          throw new Error('Chat service returned no answer');
         }
+
+        const sourceList = (councilRes.citations || [])
+          .map(source => `${source.source}: ${source.url}`)
+          .join('\n');
+        const replyText = sourceList
+          ? `${selectedMessage.text}\n\nOfficial sources:\n${sourceList}`
+          : selectedMessage.text;
 
         const replyMsg = {
           id: `rep_${Date.now()}`,
@@ -324,9 +325,10 @@ export default function NexconnChatModal({ isOpen, onClose, initialScheme = null
           [activePersona.id]: [...(prev[activePersona.id] || []), replyMsg]
         }));
       } catch (err) {
+        console.warn('Chat API error:', err.message);
         const fallbackMsg = {
           id: `rep_err_${Date.now()}`,
-          text: `Aadhaar-linked mobile authentication is required for online verification. If bank authorities ask for collateral under standard micro-schemes, quote Section 4 of DBT Directive 2024.`,
+          text: 'Abhi aapke sawal ka verified jawab nahi mil paaya. Kripya thodi der baad dobara try karein; main bina official source ke scheme ya eligibility ka daawa nahi karunga.',
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           isUser: false
         };
