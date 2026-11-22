@@ -7,10 +7,8 @@ import {
   ShieldCheck, 
   Lock, 
   Building, 
-  Headphones, 
-  ExternalLink 
+  Headphones 
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
 export default function ImportantLinks({ onAction }) {
   const links = [
@@ -44,7 +42,7 @@ export default function ImportantLinks({ onAction }) {
     },
     {
       id: 'rules',
-      label: 'Rule Engine Verification',
+      label: 'Rule Verification',
       desc: 'Deterministic matching logic',
       icon: ShieldCheck,
       action: 'rules'
@@ -65,7 +63,7 @@ export default function ImportantLinks({ onAction }) {
     },
     {
       id: 'helpline',
-      label: 'Citizen Helpline & FAQ',
+      label: 'Citizen Helpline',
       desc: 'Toll-free public assistance',
       icon: Headphones,
       action: 'faq'
@@ -73,14 +71,14 @@ export default function ImportantLinks({ onAction }) {
   ];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-govborder pb-2.5">
-        <h2 className="text-base font-bold text-navy">Important Links</h2>
+      <div className="flex items-center justify-between border-b border-govborder pb-3">
+        <h2 className="text-lg sm:text-xl font-bold text-navy">Important Links</h2>
       </div>
 
-      {/* Grid of 2-column tiles matching the reference design */}
-      <div className="grid grid-cols-2 gap-2.5">
+      {/* Grid of 2-column tiles with generous padding & tap targets */}
+      <div className="grid grid-cols-2 gap-3 sm:gap-3.5">
         {links.map((link) => {
           const IconComponent = link.icon;
           
@@ -91,10 +89,10 @@ export default function ImportantLinks({ onAction }) {
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="gov-card p-2.5 rounded border border-govborder hover:border-navy hover:bg-alabaster/40 transition flex items-center space-x-2 text-left group"
+                className="gov-card p-3 rounded-lg border border-govborder hover:border-navy hover:bg-alabaster/40 transition flex items-center space-x-2.5 text-left group shadow-xs min-h-[56px]"
               >
-                <div className="w-7 h-7 rounded bg-navy/5 text-navy flex items-center justify-center flex-shrink-0 group-hover:bg-navy group-hover:text-white transition">
-                  <IconComponent className="w-3.5 h-3.5" />
+                <div className="w-8 h-8 rounded-md bg-navy/5 text-navy flex items-center justify-center flex-shrink-0 group-hover:bg-navy group-hover:text-white transition">
+                  <IconComponent className="w-4 h-4" />
                 </div>
                 <div className="overflow-hidden">
                   <h4 className="text-xs font-semibold text-navy truncate group-hover:text-navy-light">
@@ -110,10 +108,10 @@ export default function ImportantLinks({ onAction }) {
             <button
               key={link.id}
               onClick={() => onAction(link.action)}
-              className="gov-card p-2.5 rounded border border-govborder hover:border-navy hover:bg-alabaster/40 transition flex items-center space-x-2 text-left group"
+              className="gov-card p-3 rounded-lg border border-govborder hover:border-navy hover:bg-alabaster/40 transition flex items-center space-x-2.5 text-left group shadow-xs min-h-[56px]"
             >
-              <div className="w-7 h-7 rounded bg-navy/5 text-navy flex items-center justify-center flex-shrink-0 group-hover:bg-navy group-hover:text-white transition">
-                <IconComponent className="w-3.5 h-3.5" />
+              <div className="w-8 h-8 rounded-md bg-navy/5 text-navy flex items-center justify-center flex-shrink-0 group-hover:bg-navy group-hover:text-white transition">
+                <IconComponent className="w-4 h-4" />
               </div>
               <div className="overflow-hidden">
                 <h4 className="text-xs font-semibold text-navy truncate group-hover:text-navy-light">

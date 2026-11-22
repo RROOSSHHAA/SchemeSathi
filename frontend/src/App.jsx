@@ -67,7 +67,7 @@ function HomePage() {
   return (
     <div className="min-h-screen bg-alabaster flex flex-col font-sans text-charcoal">
       
-      {/* 1. Official Government-Style Top Header */}
+      {/* 1. Official Government-Style Top Header with Satyameva Jayate Logo */}
       <TopHeader 
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -81,35 +81,35 @@ function HomePage() {
 
       {/* Ephemeral Alert Bar if triggered */}
       {notification && (
-        <div className="bg-saffron text-navy px-4 py-2 text-xs font-semibold text-center border-b border-navy/20 animate-fade-in flex items-center justify-center space-x-2">
+        <div className="bg-saffron text-navy px-4 py-2.5 text-xs font-semibold text-center border-b border-navy/20 animate-fade-in flex items-center justify-center space-x-2">
           <span>🔔</span>
           <span>{notification}</span>
         </div>
       )}
 
-      {/* 3. Hero Section matching reference image */}
+      {/* 3. Hero Section matching reference image with generous negative space */}
       <HeroBanner 
         onOpenQuestionnaire={() => setIsQuestionnaireOpen(true)} 
       />
 
-      {/* 4. Main Content Area matching the 3-column reference layout */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+      {/* 4. Main Content Area with Generous Negative Space & Responsive Grid */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-16 flex-1 w-full space-y-8">
         
         {/* Backend Connectivity Status Pill */}
-        <div className="mb-6 flex items-center justify-between text-xs text-govmuted bg-white px-3.5 py-2 rounded border border-govborder shadow-xs">
-          <div className="flex items-center space-x-2">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-govmuted bg-white px-4 py-3 rounded-lg border border-govborder shadow-xs">
+          <div className="flex items-center space-x-2.5">
             <span className={`w-2.5 h-2.5 rounded-full ${backendHealth?.status === 'operational' ? 'bg-heritage-green animate-pulse' : 'bg-govwarning'}`}></span>
-            <span className="font-medium text-navy">
+            <span className="font-semibold text-navy">
               Digital Service Engine: {backendHealth?.status === 'operational' ? 'Operational & Connected' : 'Connecting to Backend API...'}
             </span>
           </div>
-          <span className="hidden sm:inline text-charcoal-light">
-            Host: port 5000 (REST) • Client: port 5173 (Vite)
+          <span className="text-[11px] text-charcoal-light font-mono">
+            Host: port 5000 (Express REST) • Client: port 5173 (Vite)
           </span>
         </div>
 
-        {/* 3-Column Responsive Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* 3-Column Responsive Grid with Generous Gutters */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
           
           {/* Column 1: Featured Schemes (approx 5 cols on lg) */}
           <div className="lg:col-span-5">

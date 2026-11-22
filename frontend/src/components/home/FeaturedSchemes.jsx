@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, CheckCircle2, Building, ExternalLink } from 'lucide-react';
+import { ShieldCheck, CheckCircle2 } from 'lucide-react';
 
 export default function FeaturedSchemes({ onSelectScheme }) {
   const schemes = [
@@ -30,60 +30,62 @@ export default function FeaturedSchemes({ onSelectScheme }) {
   ];
 
   return (
-    <div className="space-y-4">
-      {/* Header bar matching the reference image layout */}
-      <div className="flex items-center justify-between border-b border-govborder pb-2.5">
-        <h2 className="text-lg font-bold text-navy flex items-center space-x-2">
+    <div className="space-y-5">
+      {/* Header bar with generous breathing room */}
+      <div className="flex items-center justify-between border-b border-govborder pb-3">
+        <h2 className="text-lg sm:text-xl font-bold text-navy flex items-center space-x-2">
           <span>Featured Schemes</span>
         </h2>
-        <span className="text-[11px] font-mono text-govmuted bg-alabaster-card px-2 py-0.5 rounded border border-govborder">
+        <span className="text-[11px] font-mono text-govmuted bg-white px-2.5 py-1 rounded-md border border-govborder shadow-xs">
           #FBF9FA • Verified
         </span>
       </div>
 
-      {/* Grid of Scheme Cards */}
-      <div className="grid sm:grid-cols-2 gap-4">
+      {/* Grid of Scheme Cards with Roomy Padding */}
+      <div className="grid sm:grid-cols-2 gap-5">
         {schemes.map((scheme) => (
           <div 
             key={scheme.id}
-            className="gov-card rounded-lg p-4 border border-govborder flex flex-col justify-between hover:shadow-md transition bg-white"
+            className="gov-card rounded-xl p-5 sm:p-6 border border-govborder flex flex-col justify-between hover:shadow-lg transition-shadow duration-200 bg-white"
           >
-            <div>
+            <div className="space-y-4">
               {/* Card Top: Circular Emblem & Verified Green Shield Badge */}
-              <div className="flex items-center justify-between mb-3">
-                <div className="w-11 h-11 rounded-full bg-navy/5 border border-govborder flex items-center justify-center p-1.5 shadow-inner">
+              <div className="flex items-center justify-between">
+                <div className="w-12 h-12 rounded-full bg-navy/5 border border-govborder flex items-center justify-center p-1.5 shadow-inner">
                   {scheme.iconType === 'bank' ? (
-                    <div className="w-8 h-8 rounded-full bg-navy text-white flex items-center justify-center text-[10px] font-bold">
+                    <div className="w-9 h-9 rounded-full bg-navy text-white flex items-center justify-center text-xs font-bold">
                       ₹ JDY
                     </div>
                   ) : (
-                    <div className="w-8 h-8 rounded-full bg-heritage-green text-white flex items-center justify-center text-[10px] font-bold">
+                    <div className="w-9 h-9 rounded-full bg-heritage-green text-white flex items-center justify-center text-xs font-bold">
                       + NHA
                     </div>
                   )}
                 </div>
 
-                <div className="flex items-center space-x-1 text-heritage-green bg-heritage-green/10 px-2 py-0.5 rounded-full text-xs font-semibold">
+                <div className="flex items-center space-x-1.5 text-heritage-green bg-heritage-green/10 px-2.5 py-1 rounded-full text-xs font-semibold">
                   <CheckCircle2 className="w-4 h-4 text-heritage-green" />
-                  <span className="text-[11px]">Verified</span>
+                  <span className="text-xs">Verified</span>
                 </div>
               </div>
 
               {/* Title & Description */}
-              <h3 className="text-base font-bold text-navy mb-1.5 line-clamp-1">
-                {scheme.name}
-              </h3>
-              
-              <p className="text-xs text-charcoal-light leading-relaxed mb-3 line-clamp-3">
-                {scheme.summary}
-              </p>
+              <div>
+                <h3 className="text-base sm:text-lg font-bold text-navy leading-snug line-clamp-1 mb-2">
+                  {scheme.name}
+                </h3>
+                
+                <p className="text-xs sm:text-sm text-charcoal-light leading-relaxed line-clamp-3">
+                  {scheme.summary}
+                </p>
+              </div>
             </div>
 
-            {/* Bottom Action Button matching reference design */}
-            <div className="pt-2 border-t border-govborder">
+            {/* Bottom Action Button with comfortable tap target */}
+            <div className="pt-4 mt-4 border-t border-govborder">
               <button
                 onClick={() => onSelectScheme(scheme)}
-                className="w-full sm:w-auto bg-[#D6A45B] hover:bg-[#E2BC7E] text-navy font-bold text-xs px-5 py-2 rounded shadow-sm transition"
+                className="w-full sm:w-auto bg-[#D6A45B] hover:bg-[#E2BC7E] text-navy font-bold text-xs sm:text-sm px-6 py-2.5 rounded-md shadow-sm transition active:scale-95"
               >
                 Learn More
               </button>
