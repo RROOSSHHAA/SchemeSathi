@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
+    "@nexconn/chat": "^26.5.1",
+    "@nexconn/engine": "^26.5.1",
     "axios": "^1.8.1",
     "india-states-districts": "^1.8.0",
     "lucide-react": "^0.475.0",
