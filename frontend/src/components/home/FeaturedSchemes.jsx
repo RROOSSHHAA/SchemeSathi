@@ -8,7 +8,7 @@ export default function FeaturedSchemes({ onSelectScheme }) {
       name: 'PM Jan Dhan Yojana',
       category: 'Financial Inclusion',
       verified: true,
-      iconType: 'bank',
+      logo: '/assets/pmjdy-logo.png',
       summary: 'National Mission for Financial Inclusion ensuring access to basic savings bank deposit accounts, RuPay debit cards, and accidental insurance cover.',
       benefit: 'Zero balance account + ₹2 Lakh accidental insurance + ₹10,000 overdraft facility.',
       eligibility: 'Any Indian citizen aged 10+ without a basic savings account.',
@@ -27,7 +27,7 @@ export default function FeaturedSchemes({ onSelectScheme }) {
       name: 'Ayushman Bharat (PM-JAY)',
       category: 'Healthcare Assurance',
       verified: true,
-      iconType: 'health',
+      logo: '/assets/pmjay-logo.png',
       summary: 'The world\'s largest government-funded health assurance scheme providing comprehensive secondary and tertiary medical treatment coverage.',
       benefit: '₹5,00,000 cashless health insurance coverage per eligible family per year across empaneled public & private hospitals.',
       eligibility: 'Deprived rural families & identified occupational urban categories as per SECC database.',
@@ -63,18 +63,15 @@ export default function FeaturedSchemes({ onSelectScheme }) {
             className="gov-card rounded-xl p-5 sm:p-6 border border-govborder flex flex-col justify-between hover:shadow-lg transition-shadow duration-200 bg-white"
           >
             <div className="space-y-4">
-              {/* Card Top: Circular Emblem & Verified Green Shield Badge */}
+              {/* Card Top: Scheme Logo & Verified Badge */}
               <div className="flex items-center justify-between">
-                <div className="w-12 h-12 rounded-full bg-navy/5 border border-govborder flex items-center justify-center p-1.5 shadow-inner">
-                  {scheme.iconType === 'bank' ? (
-                    <div className="w-9 h-9 rounded-full bg-navy text-white flex items-center justify-center text-xs font-bold">
-                      ₹ JDY
-                    </div>
-                  ) : (
-                    <div className="w-9 h-9 rounded-full bg-heritage-green text-white flex items-center justify-center text-xs font-bold">
-                      + NHA
-                    </div>
-                  )}
+                <div className="w-14 h-14 rounded-full bg-white border border-govborder flex items-center justify-center p-1 shadow-inner">
+                  <img
+                    src={scheme.logo}
+                    alt={`${scheme.name} logo`}
+                    className="h-full w-full object-contain"
+                    loading="lazy"
+                  />
                 </div>
 
                 <div className="flex items-center space-x-1.5 text-heritage-green bg-heritage-green/10 px-2.5 py-1 rounded-full text-xs font-semibold">
