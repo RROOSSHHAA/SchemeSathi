@@ -128,8 +128,6 @@ function HomePage() {
             />
           </div>
 
-          <StateSchemeDirectory />
-
           <div className="lg:col-span-5">
             <NewsAnnouncements 
               onSelectAnnouncement={(item) => {
@@ -137,6 +135,10 @@ function HomePage() {
                 setTimeout(() => setNotification(null), 4000);
               }}
             />
+          </div>
+
+          <div className="lg:col-span-12">
+            <StateSchemeDirectory />
           </div>
         </div>
       </main>
