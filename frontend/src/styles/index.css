@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-navy: #142B4A;
+  --color-saffron: #D6A45B;
+  --color-green: #28634A;
+  --color-alabaster: #F5F2EA;
+  --color-charcoal: #30343B;
+  --color-border: #DEDCD4;
+  --color-muted: #737982;
+  --color-success: #28634A;
+  --color-warning: #B47A29;
+  --color-error: #A33A32;
+}
+
+body {
+  background-color: var(--color-alabaster);
+  color: var(--color-charcoal);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  min-height: 100vh;
+}
+
+/* Custom Government Portal Utilities */
+.gov-card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 1px 3px 0 rgba(20, 43, 74, 0.04), 0 1px 2px -1px rgba(20, 43, 74, 0.04);
+}
+
+.gov-badge-success {
+  background-color: #EBF3EE;
+  color: #28634A;
+  border: 1px solid #C1DEC9;
+}
+
+.gov-badge-warning {
+  background-color: #FDF6E8;
+  color: #B47A29;
+  border: 1px solid #F5DFB3;
+}
+
+.gov-badge-info {
+  background-color: #E8EEF5;
+  color: #142B4A;
+  border: 1px solid #C3D5EC;
+}
+
+.gov-button-primary {
+  background-color: #142B4A;
+  color: #FFFFFF;
+  transition: all 0.15s ease-in-out;
+}
+
+.gov-button-primary:hover {
+  background-color: #1D3D68;
+}
+
+.gov-button-secondary {
+  background-color: #D6A45B;
+  color: #142B4A;
+  font-weight: 600;
+  transition: all 0.15s ease-in-out;
+}
+
+.gov-button-secondary:hover {
+  background-color: #E2BC7E;
+}
