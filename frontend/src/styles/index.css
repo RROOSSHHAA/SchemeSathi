@@ -72,32 +72,35 @@ body {
 
 /* ========================================================
    Google Translate Auto-Switcher Clean Layout Rules
-   Hides unwanted Google bars while keeping live DOM translation
+   Hides unwanted Google bars, "Rate this translation" floating widgets,
+   and tooltips while keeping live DOM translation active
    ======================================================== */
 .goog-te-banner-frame.skiptranslate,
-.goog-te-banner-frame {
+.goog-te-banner-frame,
+.goog-te-balloon-frame,
+#goog-gt-tt,
+#goog-gt-voting,
+.goog-tooltip,
+.goog-tooltip:hover,
+.goog-text-highlight,
+div[id*="goog-gt-"],
+div[class*="VIpgJd"],
+.VIpgJd-ZVi9od-aZ2wEe-wOHMyf,
+.VIpgJd-yAWNEb-L7lbkb,
+iframe.goog-te-banner-frame,
+iframe.skiptranslate,
+.skiptranslate iframe {
   display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 body {
   top: 0px !important;
+  position: static !important;
 }
 
 #google_translate_element {
-  display: none !important;
-}
-
-.goog-tooltip,
-.goog-tooltip:hover {
-  display: none !important;
-}
-
-.goog-text-highlight {
-  background-color: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-iframe.skiptranslate {
   display: none !important;
 }
