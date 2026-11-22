@@ -14,24 +14,6 @@ export default function TopHeader({ searchQuery, setSearchQuery, onSearchSubmit,
 
   return (
     <header className="bg-navy text-white border-b border-navy-light/40 sticky top-0 z-50 shadow-md">
-      {/* Top Disclaimer & Accessibility Bar */}
-      <div className="bg-navy-dark text-[11px] text-gray-300 py-1.5 px-4 sm:px-6 lg:px-8 border-b border-white/10">
-        <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
-          <div className="flex items-center space-x-2">
-            <span className="font-semibold text-saffron">SchemeSathi AI</span>
-            <span>•</span>
-            <span className="text-gray-300">National Welfare Scheme Assistance & Eligibility Portal</span>
-          </div>
-          <div className="flex items-center space-x-4 text-[11px]">
-            <span className="text-gray-400 hidden sm:inline">Independent Public Service Guidance</span>
-            <span className="hidden sm:inline text-white/20">|</span>
-            <a href="#accessibility" className="hover:text-white transition">Screen Reader Access</a>
-            <span className="hidden sm:inline text-white/20">|</span>
-            <a href="#feedback" className="hover:text-white transition">Grievance Redressal</a>
-          </div>
-        </div>
-      </div>
-
       {/* Main Header Container with Generous Breathing Room */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 sm:py-4">
         <div className="flex items-center justify-between gap-4">
