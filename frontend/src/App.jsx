@@ -12,6 +12,8 @@ import QuickQuestionnaireModal from './components/home/QuickQuestionnaireModal.j
 import StateSchemeDirectory from './components/home/StateSchemeDirectory.jsx';
 import SchemeDirectory from './components/home/SchemeDirectory.jsx';
 import NexconnChatModal from './components/chat/NexconnChatModal.jsx';
+import ApplySchemeModal from './components/apply/ApplySchemeModal.jsx';
+import ApplySchemePage from './pages/ApplySchemePage.jsx';
 import { MessageSquare } from 'lucide-react';
 import api from './services/api.js';
 
@@ -19,6 +21,7 @@ function HomePage() {
   const navigate = useNavigate();
   const [selectedScheme, setSelectedScheme] = useState(null);
   const [isQuestionnaireOpen, setIsQuestionnaireOpen] = useState(false);
+  const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
   const [isNexconnChatOpen, setIsNexconnChatOpen] = useState(false);
   const [chatSchemeContext, setChatSchemeContext] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -87,7 +90,7 @@ function HomePage() {
       />
 
       {/* 2. Sub-Navigation Bar */}
-      <SubNavBar />
+      <SubNavBar onOpenApply={() => setIsApplyModalOpen(true)} />
 
       {/* Ephemeral Alert Bar if triggered */}
       {notification && (
@@ -171,6 +174,16 @@ function HomePage() {
       <QuickQuestionnaireModal 
         isOpen={isQuestionnaireOpen}
         onClose={() => setIsQuestionnaireOpen(false)}
+      />
+
+      {/* Apply for Scheme Interactive Modal (Details + Scheme For Dropdown + Clickable Links) */}
+      <ApplySchemeModal
+        isOpen={isApplyModalOpen}
+        onClose={() => setIsApplyModalOpen(false)}
+        onOpenChat={(scheme) => {
+          setChatSchemeContext(scheme);
+          setIsNexconnChatOpen(true);
+        }}
       />
 
       {/* Floating Nexconn Live Sahayak Button */}
@@ -262,6 +275,8 @@ export default function App() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/schemes" element={<SchemePage />} />
+      <Route path="/questionnaire" element={<ApplySchemePage />} />
+      <Route path="/apply" element={<ApplySchemePage />} />
       <Route path="*" element={<HomePage />} />
     </Routes>
   );
