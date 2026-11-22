@@ -129,8 +129,6 @@ function HomePage() {
             />
           </div>
 
-          <StateSchemeDirectory />
-
           {/* Column 2: Latest News & Announcements (approx 5 cols on lg) */}
           <div className="lg:col-span-5">
             <NewsAnnouncements 
@@ -139,6 +137,11 @@ function HomePage() {
                 setTimeout(() => setNotification(null), 4000);
               }}
             />
+          </div>
+
+          {/* Full-width State & Union Territory directory */}
+          <div className="lg:col-span-12">
+            <StateSchemeDirectory />
           </div>
 
         </div>

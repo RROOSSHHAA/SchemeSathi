@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import indianCitizensImage from '../../../../images/indians.webp';
 
 export default function HeroBanner({ onOpenQuestionnaire }) {
   return (
@@ -9,10 +10,10 @@ export default function HeroBanner({ onOpenQuestionnaire }) {
       <div className="absolute inset-0 opacity-5 pointer-events-none bg-[radial-gradient(#D6A45B_1px,transparent_1px)] [background-size:20px_20px]"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+        <div className="grid md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           
           {/* Left Text & Action Column with Generous Negative Space */}
-          <div className="lg:col-span-6 space-y-6 sm:space-y-7 text-left">
+          <div className="md:col-span-1 lg:col-span-6 space-y-6 sm:space-y-7 text-left">
             <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-saffron/40 text-saffron-light text-xs font-semibold backdrop-blur-xs">
               <ShieldCheck className="w-4 h-4 text-saffron" />
               <span>National Welfare Eligibility & Citations System</span>
@@ -44,13 +45,26 @@ export default function HeroBanner({ onOpenQuestionnaire }) {
           </div>
 
           {/* Right Citizen Showcase Column with Enhanced Responsiveness & Spacing */}
-          <div className="lg:col-span-6">
+          <div className="md:col-span-1 lg:col-span-6">
             <div className="relative">
+              <div className="flex justify-center">
+                <div className="relative w-64 sm:w-72 md:w-80 lg:w-96 aspect-square">
+                  <div className="absolute -inset-3 rounded-full border border-saffron/50"></div>
+                  <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-saffron shadow-2xl">
+                    <img
+                      src={indianCitizensImage}
+                      alt="A diverse group of Indian citizens"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+              </div>
+
               {/* Back illumination glow */}
               <div className="absolute -inset-4 bg-saffron/15 rounded-3xl blur-2xl -z-10"></div>
 
               {/* Citizen Showcase Montage Container */}
-              <div className="bg-navy-dark/75 border border-white/20 rounded-2xl p-5 sm:p-7 shadow-2xl backdrop-blur-md">
+              <div className="md:hidden bg-navy-dark/75 border border-white/20 rounded-2xl p-5 sm:p-7 shadow-2xl backdrop-blur-md">
                 
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 sm:gap-4">
                   
