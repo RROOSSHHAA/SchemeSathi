@@ -1,7 +1,7 @@
 import React from 'react';
 import { X, CheckCircle2, ExternalLink, ShieldAlert, FileText, ArrowRight } from 'lucide-react';
 
-export default function SchemeDetailModal({ scheme, onClose, onCheckEligibility }) {
+export default function SchemeDetailModal({ scheme, onClose, onCheckEligibility, onOpenChat }) {
   if (!scheme) return null;
 
   return (
@@ -114,9 +114,20 @@ export default function SchemeDetailModal({ scheme, onClose, onCheckEligibility 
           </a>
 
           <div className="flex items-center space-x-3 w-full sm:w-auto">
+            {onOpenChat && (
+              <button
+                onClick={() => {
+                  onClose();
+                  onOpenChat(scheme);
+                }}
+                className="w-1/3 sm:w-auto px-3.5 py-2 border border-saffron bg-saffron/10 text-navy rounded text-xs font-semibold hover:bg-saffron/20 transition flex items-center justify-center space-x-1"
+              >
+                <span>Live Sahayak</span>
+              </button>
+            )}
             <button
               onClick={onClose}
-              className="w-1/2 sm:w-auto px-4 py-2 border border-govborder rounded text-xs font-semibold text-charcoal hover:bg-white transition"
+              className="w-1/3 sm:w-auto px-4 py-2 border border-govborder rounded text-xs font-semibold text-charcoal hover:bg-white transition"
             >
               Close
             </button>
@@ -125,9 +136,9 @@ export default function SchemeDetailModal({ scheme, onClose, onCheckEligibility 
                 onClose();
                 onCheckEligibility(scheme);
               }}
-              className="w-1/2 sm:w-auto bg-navy hover:bg-navy-light text-white px-5 py-2 rounded text-xs font-semibold shadow transition flex items-center justify-center space-x-1.5"
+              className="w-1/3 sm:w-auto bg-navy hover:bg-navy-light text-white px-5 py-2 rounded text-xs font-semibold shadow transition flex items-center justify-center space-x-1.5"
             >
-              <span>Check My Eligibility</span>
+              <span>Check Eligibility</span>
               <ArrowRight className="w-3.5 h-3.5 text-saffron" />
             </button>
           </div>

@@ -49,6 +49,8 @@ app.get('/', (req, res) => {
       schemeMatch: 'POST /api/v1/schemes/match',
       cscCenters: 'GET /api/v1/schemes/csc-centers',
       multiAgentChat: 'POST /api/v1/chat/multi-agent',
+      nexconnToken: 'GET /api/v1/chat/nexconn/token',
+      nexconnVolunteers: 'GET /api/v1/chat/nexconn/volunteers',
       ephemeralVault: '/api/v1/vault/assist'
     }
   });
