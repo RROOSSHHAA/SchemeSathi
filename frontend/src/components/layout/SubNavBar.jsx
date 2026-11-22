@@ -2,11 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
   CreditCard, 
-  SearchCheck, 
-  GraduationCap, 
-  Sprout, 
-  ShieldCheck, 
-  MessageSquare
+  SearchCheck
 } from 'lucide-react';
 
 export default function SubNavBar({ onOpenApply }) {
@@ -42,25 +38,6 @@ export default function SubNavBar({ onOpenApply }) {
           </a>
         </div>
 
-        {/* Right Category Links */}
-        <div className="hidden lg:flex items-center space-x-6 text-gray-300">
-          <Link to="/questionnaire?cat=education" className="hover:text-white transition flex items-center space-x-1">
-            <GraduationCap className="w-3 h-3 text-saffron-light" />
-            <span>Scholarships</span>
-          </Link>
-          <Link to="/questionnaire?cat=agriculture" className="hover:text-white transition flex items-center space-x-1">
-            <Sprout className="w-3 h-3 text-saffron-light" />
-            <span>Farmer Welfare</span>
-          </Link>
-          <Link to="/questionnaire?cat=hospitality" className="hover:text-white transition flex items-center space-x-1">
-            <ShieldCheck className="w-3 h-3 text-saffron-light" />
-            <span>Ayushman Health</span>
-          </Link>
-          <Link to="/questionnaire?cat=loan" className="hover:text-white transition flex items-center space-x-1">
-            <CreditCard className="w-3 h-3 text-saffron-light" />
-            <span>Mudra Loans</span>
-          </Link>
-        </div>
       </div>
     </div>
   );
