@@ -13,6 +13,8 @@ import SchemeDirectory from './components/home/SchemeDirectory.jsx';
 import NexconnChatModal from './components/chat/NexconnChatModal.jsx';
 import ApplySchemeModal from './components/apply/ApplySchemeModal.jsx';
 import ApplySchemePage from './pages/ApplySchemePage.jsx';
+import AboutUsPage from './pages/AboutUsPage.jsx';
+import DocumentsPage from './pages/DocumentsPage.jsx';
 import { MessageSquare } from 'lucide-react';
 import api from './services/api.js';
 
@@ -263,7 +265,9 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/about" element={<AboutUsPage />} />
       <Route path="/schemes" element={<SchemePage />} />
+      <Route path="/documents" element={<DocumentsPage />} />
       <Route path="/questionnaire" element={<ApplySchemePage />} />
       <Route path="/apply" element={<ApplySchemePage />} />
       <Route path="*" element={<HomePage />} />

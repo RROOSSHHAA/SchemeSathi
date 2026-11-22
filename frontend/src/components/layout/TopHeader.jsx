@@ -43,18 +43,15 @@ export default function TopHeader({ searchQuery, setSearchQuery, onSearchSubmit,
               <Link to="/" className="text-white font-bold border-b-2 border-saffron pb-1 hover:text-saffron transition">
                 Home
               </Link>
-              <a href="#about" className="hover:text-white transition py-1">
+              <Link to="/about" className="hover:text-white transition py-1">
                 About Us
-              </a>
+              </Link>
               <Link to="/schemes" className="hover:text-white transition py-1">
                 Schemes
               </Link>
-              <a href="#documents" className="hover:text-white transition py-1">
+              <Link to="/documents" className="hover:text-white transition py-1">
                 Documents
-              </a>
-              <a href="#contact" className="hover:text-white transition py-1">
-                Contact
-              </a>
+              </Link>
             </nav>
 
             {/* Language Selector */}
@@ -172,13 +169,13 @@ export default function TopHeader({ searchQuery, setSearchQuery, onSearchSubmit,
               >
                 Home
               </Link>
-              <a 
-                href="#about" 
+              <Link 
+                to="/about" 
                 onClick={() => setMobileMenuOpen(false)}
                 className="px-3 py-2 rounded hover:bg-white/10 text-gray-200"
               >
                 About Us
-              </a>
+              </Link>
               <Link 
                 to="/schemes" 
                 onClick={() => setMobileMenuOpen(false)}
@@ -186,20 +183,13 @@ export default function TopHeader({ searchQuery, setSearchQuery, onSearchSubmit,
               >
                 Schemes Catalogue
               </Link>
-              <a 
-                href="#documents" 
+              <Link 
+                to="/documents" 
                 onClick={() => setMobileMenuOpen(false)}
                 className="px-3 py-2 rounded hover:bg-white/10 text-gray-200"
               >
                 Required Documents
-              </a>
-              <a 
-                href="#contact" 
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2 rounded hover:bg-white/10 text-gray-200"
-              >
-                Contact & Support
-              </a>
+              </Link>
             </nav>
 
             {/* Language Selector on Mobile */}

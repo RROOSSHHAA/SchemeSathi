@@ -20,51 +20,10 @@ export default function PortalFooter() {
           {/* Middle: Horizontal Nav Links with Good Spacing */}
           <nav className="flex flex-wrap items-center gap-6 sm:gap-8 text-xs sm:text-sm text-gray-200 font-medium">
             <Link to="/" className="hover:text-saffron transition">Home</Link>
-            <a href="#about" className="hover:text-saffron transition">About Us</a>
+            <Link to="/about" className="hover:text-saffron transition">About Us</Link>
             <Link to="/schemes" className="hover:text-saffron transition">Schemes</Link>
-            <a href="#documents" className="hover:text-saffron transition">Documents</a>
-            <a href="#contact" className="hover:text-saffron transition">Contact</a>
+            <Link to="/documents" className="hover:text-saffron transition">Documents</Link>
           </nav>
-
-          {/* Right: Social Media Icons matching reference layout */}
-          <div className="flex items-center space-x-3 text-white">
-            <a 
-              href="https://facebook.com" 
-              target="_blank" 
-              rel="noreferrer" 
-              className="w-9 h-9 rounded-full bg-white/10 hover:bg-saffron hover:text-navy transition flex items-center justify-center text-xs font-bold"
-              aria-label="Facebook"
-            >
-              f
-            </a>
-            <a 
-              href="https://linkedin.com" 
-              target="_blank" 
-              rel="noreferrer" 
-              className="w-9 h-9 rounded-full bg-white/10 hover:bg-saffron hover:text-navy transition flex items-center justify-center text-xs font-bold"
-              aria-label="LinkedIn"
-            >
-              in
-            </a>
-            <a 
-              href="https://twitter.com" 
-              target="_blank" 
-              rel="noreferrer" 
-              className="w-9 h-9 rounded-full bg-white/10 hover:bg-saffron hover:text-navy transition flex items-center justify-center text-xs font-bold"
-              aria-label="Twitter / X"
-            >
-              𝕏
-            </a>
-            <a 
-              href="https://youtube.com" 
-              target="_blank" 
-              rel="noreferrer" 
-              className="w-9 h-9 rounded-full bg-white/10 hover:bg-saffron hover:text-navy transition flex items-center justify-center text-xs font-bold"
-              aria-label="YouTube / Media"
-            >
-              ▶
-            </a>
-          </div>
 
         </div>
 
