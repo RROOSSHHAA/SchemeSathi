@@ -18,6 +18,7 @@ import ApplySchemePage from './pages/ApplySchemePage.jsx';
 import AboutUsPage from './pages/AboutUsPage.jsx';
 import DocumentsPage from './pages/DocumentsPage.jsx';
 import FloatingSahayakButton from './components/chat/FloatingSahayakButton.jsx';
+import { getCurrentLanguage } from './services/languageService.js';
 import { MessageSquare } from 'lucide-react';
 import api from './services/api.js';
 
@@ -31,7 +32,7 @@ function HomePage() {
   const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
   const [activeApplyScheme, setActiveApplyScheme] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [currentLanguage, setCurrentLanguage] = useState('en');
+  const [currentLanguage, setCurrentLanguage] = useState(getCurrentLanguage());
   const [backendHealth, setBackendHealth] = useState(null);
   const [notification, setNotification] = useState(null);
 
@@ -181,7 +182,7 @@ function SchemePage() {
   const navigate = useNavigate();
   const [isQuestionnaireOpen, setIsQuestionnaireOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [currentLanguage, setCurrentLanguage] = useState('en');
+  const [currentLanguage, setCurrentLanguage] = useState(getCurrentLanguage());
 
   return (
     <div className="min-h-screen bg-alabaster flex flex-col font-sans text-charcoal">

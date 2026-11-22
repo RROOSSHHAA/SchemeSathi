@@ -5,6 +5,7 @@ import SubNavBar from '../components/layout/SubNavBar.jsx';
 import PortalFooter from '../components/layout/PortalFooter.jsx';
 import NexconnChatModal from '../components/chat/NexconnChatModal.jsx';
 import FloatingSahayakButton from '../components/chat/FloatingSahayakButton.jsx';
+import { getCurrentLanguage } from '../services/languageService.js';
 import { 
   ShieldCheck, 
   Sparkles, 
@@ -23,7 +24,7 @@ import {
 export default function AboutUsPage() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
-  const [currentLanguage, setCurrentLanguage] = useState('en');
+  const [currentLanguage, setCurrentLanguage] = useState(getCurrentLanguage());
   const [isNexconnChatOpen, setIsNexconnChatOpen] = useState(false);
   const [startWithVoice, setStartWithVoice] = useState(false);
 

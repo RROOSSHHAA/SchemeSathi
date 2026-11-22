@@ -2,9 +2,16 @@ import React, { useState } from 'react';
 import { Search, Globe, Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { schemeCatalog } from '../home/SchemeDirectory.jsx';
+import { changeLanguage, getCurrentLanguage } from '../../services/languageService.js';
 
 export default function TopHeader({ searchQuery, setSearchQuery, onSearchSubmit, onLanguageChange, currentLanguage }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const activeLang = currentLanguage || getCurrentLanguage();
+
+  const handleLangSelect = (langCode) => {
+    changeLanguage(langCode);
+    if (onLanguageChange) onLanguageChange(langCode);
+  };
   const normalizedQuery = searchQuery.trim().toLowerCase();
   const suggestions = normalizedQuery
     ? schemeCatalog.filter((scheme) =>
@@ -54,26 +61,26 @@ export default function TopHeader({ searchQuery, setSearchQuery, onSearchSubmit,
               </Link>
             </nav>
 
-            {/* Language Selector */}
+            {/* Language Selector (Google Translate Auto Switcher) */}
             <div className="flex items-center space-x-1.5 text-xs text-gray-200 bg-white/10 px-3 py-1.5 rounded-md border border-white/20 shadow-xs">
               <Globe className="w-3.5 h-3.5 text-saffron" />
               <button 
-                onClick={() => onLanguageChange('en')} 
-                className={`hover:text-white transition ${currentLanguage === 'en' ? 'font-bold text-white underline underline-offset-4 decoration-saffron' : 'text-gray-300'}`}
+                onClick={() => handleLangSelect('en')} 
+                className={`hover:text-white transition cursor-pointer ${activeLang === 'en' ? 'font-bold text-white underline underline-offset-4 decoration-saffron' : 'text-gray-300'}`}
               >
                 English
               </button>
               <span className="text-white/30">|</span>
               <button 
-                onClick={() => onLanguageChange('hi')} 
-                className={`hover:text-white transition ${currentLanguage === 'hi' ? 'font-bold text-white underline underline-offset-4 decoration-saffron' : 'text-gray-300'}`}
+                onClick={() => handleLangSelect('hi')} 
+                className={`hover:text-white transition cursor-pointer ${activeLang === 'hi' ? 'font-bold text-white underline underline-offset-4 decoration-saffron' : 'text-gray-300'}`}
               >
                 हिन्दी
               </button>
               <span className="text-white/30">|</span>
               <button 
-                onClick={() => onLanguageChange('mr')} 
-                className={`hover:text-white transition ${currentLanguage === 'mr' ? 'font-bold text-white underline underline-offset-4 decoration-saffron' : 'text-gray-300'}`}
+                onClick={() => handleLangSelect('mr')} 
+                className={`hover:text-white transition cursor-pointer ${activeLang === 'mr' ? 'font-bold text-white underline underline-offset-4 decoration-saffron' : 'text-gray-300'}`}
               >
                 मराठी
               </button>
@@ -200,20 +207,20 @@ export default function TopHeader({ searchQuery, setSearchQuery, onSearchSubmit,
               </span>
               <div className="flex space-x-2">
                 <button 
-                  onClick={() => onLanguageChange('en')} 
-                  className={`px-2 py-1 rounded ${currentLanguage === 'en' ? 'bg-saffron text-navy font-bold' : 'text-gray-300'}`}
+                  onClick={() => handleLangSelect('en')} 
+                  className={`px-2 py-1 rounded cursor-pointer ${activeLang === 'en' ? 'bg-saffron text-navy font-bold' : 'text-gray-300'}`}
                 >
                   EN
                 </button>
                 <button 
-                  onClick={() => onLanguageChange('hi')} 
-                  className={`px-2 py-1 rounded ${currentLanguage === 'hi' ? 'bg-saffron text-navy font-bold' : 'text-gray-300'}`}
+                  onClick={() => handleLangSelect('hi')} 
+                  className={`px-2 py-1 rounded cursor-pointer ${activeLang === 'hi' ? 'bg-saffron text-navy font-bold' : 'text-gray-300'}`}
                 >
                   हिन्दी
                 </button>
                 <button 
-                  onClick={() => onLanguageChange('mr')} 
-                  className={`px-2 py-1 rounded ${currentLanguage === 'mr' ? 'bg-saffron text-navy font-bold' : 'text-gray-300'}`}
+                  onClick={() => handleLangSelect('mr')} 
+                  className={`px-2 py-1 rounded cursor-pointer ${activeLang === 'mr' ? 'bg-saffron text-navy font-bold' : 'text-gray-300'}`}
                 >
                   मराठी
                 </button>

@@ -5,6 +5,7 @@ import SubNavBar from '../components/layout/SubNavBar.jsx';
 import PortalFooter from '../components/layout/PortalFooter.jsx';
 import NexconnChatModal from '../components/chat/NexconnChatModal.jsx';
 import FloatingSahayakButton from '../components/chat/FloatingSahayakButton.jsx';
+import { getCurrentLanguage } from '../services/languageService.js';
 import { 
   ExternalLink, 
   CheckCircle2, 
@@ -29,7 +30,7 @@ export default function ApplySchemePage() {
   });
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [currentLanguage, setCurrentLanguage] = useState('en');
+  const [currentLanguage, setCurrentLanguage] = useState(getCurrentLanguage());
   const [isNexconnChatOpen, setIsNexconnChatOpen] = useState(false);
   const [startWithVoice, setStartWithVoice] = useState(false);
   const [chatSchemeContext, setChatSchemeContext] = useState(null);
@@ -82,25 +83,12 @@ export default function ApplySchemePage() {
             <button
               onClick={() => {
                 setChatSchemeContext(null);
-                setStartWithVoice(true);
-                setIsNexconnChatOpen(true);
-              }}
-              className="px-3.5 py-2.5 bg-saffron hover:bg-saffron-dark text-navy text-xs font-bold rounded-lg flex items-center space-x-1.5 shadow-xs transition cursor-pointer"
-              title="Voice Assistant • बोलकर पूछें"
-            >
-              <Mic className="w-4 h-4 text-navy" />
-              <span>Voice Assistant</span>
-            </button>
-            <button
-              onClick={() => {
-                setChatSchemeContext(null);
-                setStartWithVoice(false);
                 setIsNexconnChatOpen(true);
               }}
               className="px-4 py-2.5 bg-navy hover:bg-navy-light text-white text-xs font-semibold rounded-lg flex items-center space-x-2 shadow-xs transition cursor-pointer"
             >
               <MessageSquare className="w-4 h-4 text-saffron" />
-              <span>Live Sahayak</span>
+              <span>Live Sahayak Desk</span>
             </button>
           </div>
         </div>
