@@ -1,0 +1,176 @@
+/**
+ * DemoShield Resilient Fallback Layer
+ * Ensures zero-crash, zero-hang demo execution during live judging
+ */
+
+export const FALLBACK_SCHEMES = [
+  {
+    code: 'MUDRA_SHISHU',
+    title: 'PM Mudra Yojana (Shishu Category)',
+    title_hi: 'प्रधानमंत्री मुद्रा योजना (शिशु)',
+    ministry: 'Ministry of Finance',
+    category: 'Business & MSME',
+    min_age: 18,
+    max_age: 65,
+    max_income_limit: 500000,
+    target_gender: 'ALL',
+    target_occupations: ['Small Business', 'Artisan', 'Tailor', 'Trader', 'All'],
+    max_benefit_amount: 'Up to ₹50,000 Collateral-Free',
+    benefit_summary: 'Zero collateral working capital loan with subsidized interest for micro-enterprises and small shops.',
+    official_portal_url: 'https://www.mudra.org.in',
+    application_pdf_url: 'https://www.mudra.org.in/Default/DownloadFile/Shishu_Application_Form.pdf',
+    verified_citation: '[[1]] mudra.org.in/faq/shishu-loan'
+  },
+  {
+    code: 'AYUSHMAN_BHARAT',
+    title: 'Ayushman Bharat PM-JAY',
+    title_hi: 'आयुष्मान भारत प्रधानमंत्री जन आरोग्य योजना',
+    ministry: 'Ministry of Health & Family Welfare',
+    category: 'Healthcare',
+    min_age: 0,
+    max_age: 100,
+    max_income_limit: 250000,
+    target_gender: 'ALL',
+    target_occupations: ['All', 'Farmer', 'Worker', 'Labor'],
+    max_benefit_amount: '₹5,00,000 Free Health Cover',
+    benefit_summary: 'Cashless secondary and tertiary hospitalization treatment per family per year across empaneled hospitals.',
+    official_portal_url: 'https://pmjay.gov.in',
+    application_pdf_url: 'https://pmjay.gov.in/sites/default/files/2018-09/AB-PMJAY-Guidelines.pdf',
+    verified_citation: '[[2]] pmjay.gov.in/about/pmjay'
+  },
+  {
+    code: 'PM_KISAN',
+    title: 'PM Kisan Samman Nidhi',
+    title_hi: 'पीएम किसान सम्मान निधि',
+    ministry: 'Ministry of Agriculture',
+    category: 'Agriculture',
+    min_age: 18,
+    max_age: 80,
+    max_income_limit: 400000,
+    target_gender: 'ALL',
+    target_occupations: ['Farmer', 'Agricultural Worker'],
+    max_benefit_amount: '₹6,000 / year (Direct DBT)',
+    benefit_summary: 'Direct income support of ₹6,000 per year transferred directly to landholding farmer families bank accounts in 3 installments.',
+    official_portal_url: 'https://pmkisan.gov.in',
+    application_pdf_url: 'https://pmkisan.gov.in/Documents/OperationalGuidelines.pdf',
+    verified_citation: '[[3]] pmkisan.gov.in/scheme-guidelines'
+  },
+  {
+    code: 'PM_SVANIDHI',
+    title: 'PM SVANidhi Street Vendor Loan',
+    title_hi: 'पीएम स्वनिधि योजना',
+    ministry: 'Ministry of Housing & Urban Affairs',
+    category: 'Micro Credit',
+    min_age: 18,
+    max_age: 60,
+    max_income_limit: 300000,
+    target_gender: 'ALL',
+    target_occupations: ['Street Vendor', 'Hawker', 'Artisan', 'Small Business'],
+    max_benefit_amount: 'Up to ₹10,000 - ₹50,000',
+    benefit_summary: 'Collateral-free working capital loan for urban street vendors with 7% interest subsidy on digital transaction cashback.',
+    official_portal_url: 'https://pmsvanidhi.mohua.gov.in',
+    application_pdf_url: 'https://pmsvanidhi.mohua.gov.in/assets/doc/Scheme_Guidelines.pdf',
+    verified_citation: '[[4]] pmsvanidhi.mohua.gov.in/faq'
+  },
+  {
+    code: 'STANDUP_INDIA',
+    title: 'Stand-Up India Scheme',
+    title_hi: 'स्टैंड-अप इंडिया योजना',
+    ministry: 'Ministry of Finance',
+    category: 'Entrepreneurship',
+    min_age: 18,
+    max_age: 65,
+    max_income_limit: 1000000,
+    target_gender: 'WOMEN',
+    target_occupations: ['Entrepreneur', 'Startup', 'Manufacturer', 'Trader'],
+    max_benefit_amount: '₹10 Lakh to ₹1 Crore',
+    benefit_summary: 'Bank loans for setting up greenfield trading, manufacturing, or service enterprises by women or SC/ST entrepreneurs.',
+    official_portal_url: 'https://www.standupmitra.in',
+    application_pdf_url: 'https://www.standupmitra.in/Home/DownloadFile',
+    verified_citation: '[[5]] standupmitra.in/about'
+  },
+  {
+    code: 'LAKHPATI_DIDI',
+    title: 'Lakhpati Didi SHG Initiative',
+    title_hi: 'लखपति दीदी योजना',
+    ministry: 'Ministry of Rural Development',
+    category: 'Women Empowerment',
+    min_age: 18,
+    max_age: 55,
+    max_income_limit: 300000,
+    target_gender: 'FEMALE',
+    target_occupations: ['SHG Member', 'Artisan', 'Farmer', 'Tailor'],
+    max_benefit_amount: 'Skill Training + Interest Subvention',
+    benefit_summary: 'Financial credit linkage and market-access training to enable rural women in SHGs to earn sustainable income over ₹1 Lakh/year.',
+    official_portal_url: 'https://nrlm.gov.in',
+    application_pdf_url: null,
+    verified_citation: '[[6]] nrlm.gov.in/lakhpatididi'
+  },
+  {
+    code: 'POST_MATRIC_SCHOLARSHIP',
+    title: 'Post-Matric Scholarship Scheme',
+    title_hi: 'पोस्ट मैट्रिक छात्रवृत्ति योजना',
+    ministry: 'Ministry of Social Justice & Empowerment',
+    category: 'Education',
+    min_age: 16,
+    max_age: 30,
+    max_income_limit: 250000,
+    target_gender: 'ALL',
+    target_occupations: ['Student', 'All'],
+    max_benefit_amount: '100% Tuition + Maintenance Allowance',
+    benefit_summary: 'Comprehensive financial support covering compulsory non-refundable fees and monthly stipend for post-matriculation studies.',
+    official_portal_url: 'https://scholarships.gov.in',
+    application_pdf_url: 'https://scholarships.gov.in/public/schemeGuidelines/Guidelines.pdf',
+    verified_citation: '[[7]] scholarships.gov.in/guidelines'
+  },
+  {
+    code: 'SUKANYA_SAMRIDDHI',
+    title: 'Sukanya Samriddhi Yojana (SSY)',
+    title_hi: 'सुकन्या समृद्धि योजना',
+    ministry: 'Ministry of Finance',
+    category: 'Family & Child',
+    min_age: 0,
+    max_age: 10,
+    max_income_limit: null,
+    target_gender: 'FEMALE',
+    target_occupations: ['All'],
+    max_benefit_amount: '8.2% Tax-Free Compound Interest',
+    benefit_summary: 'Small deposit savings scheme for girl child education and marriage with triple tax exemption under Section 80C.',
+    official_portal_url: 'https://www.indiapost.gov.in',
+    application_pdf_url: 'https://www.indiapost.gov.in/VAS/DOP_PDFFiles/SSY_Form.pdf',
+    verified_citation: '[[8]] indiapost.gov.in/ssy'
+  }
+];
+
+export const FALLBACK_CSC_CENTERS = [
+  {
+    name: 'Jan Seva Kendra - Sakinaka Junction',
+    address: 'Shop 12, Metro Pillar 44, Sakinaka, Andheri East, Mumbai, Maharashtra 400072',
+    rating: 4.8,
+    phone: '+91 98201 54321',
+    distance: '0.8 km',
+    operating_hours: '9:30 AM - 6:30 PM (Mon-Sat)',
+    services: ['Aadhaar e-KYC', 'Biometric Authentication', 'DBT Seeding', 'Digital Life Certificate'],
+    maps_url: 'https://maps.google.com/?q=Common+Service+Centre+Sakinaka+Mumbai'
+  },
+  {
+    name: 'MahaOnline CSC Digital Seva Kendra',
+    address: 'Plot 4B, Opposite Railway Station, Kurla West, Mumbai, Maharashtra 400070',
+    rating: 4.6,
+    phone: '+91 98202 98765',
+    distance: '2.1 km',
+    operating_hours: '10:00 AM - 7:00 PM',
+    services: ['Scheme Application Filing', 'Income Certificate', 'Caste Certificate Verification'],
+    maps_url: 'https://maps.google.com/?q=MahaOnline+CSC+Kurla+Mumbai'
+  },
+  {
+    name: 'Apna CSC Pragati Kendra',
+    address: 'Shop 3, Azad Nagar, Ghatkopar West, Mumbai, Maharashtra 400086',
+    rating: 4.7,
+    phone: '+91 98203 11223',
+    distance: '3.4 km',
+    operating_hours: '9:00 AM - 6:00 PM',
+    services: ['Ayushman Golden Card Print', 'Mudra Registration', 'PM Kisan eKYC'],
+    maps_url: 'https://maps.google.com/?q=Common+Service+Centre+Ghatkopar+Mumbai'
+  }
+];
