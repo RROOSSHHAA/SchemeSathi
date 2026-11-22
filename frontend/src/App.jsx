@@ -115,9 +115,6 @@ function HomePage() {
               Digital Service Engine: {backendHealth?.status === 'operational' ? 'Operational & Connected' : 'Connecting to Backend API...'}
             </span>
           </div>
-          <span className="text-[11px] text-charcoal-light font-mono">
-            Host: port 5000 (Express REST) • Client: port 5173 (Vite)
-          </span>
         </div>
 
         {/* 2-Column Balanced Responsive Grid */}
