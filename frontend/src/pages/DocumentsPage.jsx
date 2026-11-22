@@ -4,6 +4,7 @@ import TopHeader from '../components/layout/TopHeader.jsx';
 import SubNavBar from '../components/layout/SubNavBar.jsx';
 import PortalFooter from '../components/layout/PortalFooter.jsx';
 import NexconnChatModal from '../components/chat/NexconnChatModal.jsx';
+import FloatingSahayakButton from '../components/chat/FloatingSahayakButton.jsx';
 import { 
   FileText, 
   ExternalLink, 
@@ -177,6 +178,7 @@ export default function DocumentsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentLanguage, setCurrentLanguage] = useState('en');
   const [isNexconnChatOpen, setIsNexconnChatOpen] = useState(false);
+  const [startWithVoice, setStartWithVoice] = useState(false);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -354,26 +356,25 @@ export default function DocumentsPage() {
       {/* Footer */}
       <PortalFooter />
 
-      {/* Floating Sahayak */}
-      <button
-        onClick={() => setIsNexconnChatOpen(true)}
-        className="fixed bottom-6 right-6 z-40 bg-navy hover:bg-navy-light text-white px-4 py-3 rounded-full shadow-2xl border-2 border-saffron flex items-center space-x-2.5 transition-all hover:scale-105 group cursor-pointer"
-        aria-label="Open Live Sahayak Chat"
-      >
-        <div className="relative">
-          <MessageSquare className="w-5 h-5 text-saffron" />
-          <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-heritage-green animate-ping" />
-          <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-heritage-green" />
-        </div>
-        <div className="text-left hidden sm:block">
-          <div className="text-xs font-bold leading-tight">योजनासाथी Sahayak</div>
-          <div className="text-[10px] text-saffron font-medium leading-tight">Live Chat Desk</div>
-        </div>
-      </button>
+      {/* Floating Sahayak & Voice Assistant */}
+      <FloatingSahayakButton
+        onOpenChat={() => {
+          setStartWithVoice(false);
+          setIsNexconnChatOpen(true);
+        }}
+        onOpenVoice={() => {
+          setStartWithVoice(true);
+          setIsNexconnChatOpen(true);
+        }}
+      />
 
       <NexconnChatModal
         isOpen={isNexconnChatOpen}
-        onClose={() => setIsNexconnChatOpen(false)}
+        onClose={() => {
+          setIsNexconnChatOpen(false);
+          setStartWithVoice(false);
+        }}
+        startWithVoice={startWithVoice}
       />
 
     </div>

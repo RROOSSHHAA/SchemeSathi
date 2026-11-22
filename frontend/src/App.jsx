@@ -15,6 +15,7 @@ import ApplySchemeModal from './components/apply/ApplySchemeModal.jsx';
 import ApplySchemePage from './pages/ApplySchemePage.jsx';
 import AboutUsPage from './pages/AboutUsPage.jsx';
 import DocumentsPage from './pages/DocumentsPage.jsx';
+import FloatingSahayakButton from './components/chat/FloatingSahayakButton.jsx';
 import { MessageSquare } from 'lucide-react';
 import api from './services/api.js';
 
@@ -24,6 +25,7 @@ function HomePage() {
   const [isQuestionnaireOpen, setIsQuestionnaireOpen] = useState(false);
   const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
   const [isNexconnChatOpen, setIsNexconnChatOpen] = useState(false);
+  const [startWithVoice, setStartWithVoice] = useState(false);
   const [chatSchemeContext, setChatSchemeContext] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [currentLanguage, setCurrentLanguage] = useState('en');
@@ -180,31 +182,29 @@ function HomePage() {
         }}
       />
 
-      {/* Floating Nexconn Live Sahayak Button */}
-      <button
-        onClick={() => {
+      {/* Floating Sahayak & Voice Assistant Button */}
+      <FloatingSahayakButton
+        onOpenChat={() => {
           setChatSchemeContext(null);
+          setStartWithVoice(false);
           setIsNexconnChatOpen(true);
         }}
-        className="fixed bottom-6 right-6 z-40 bg-navy hover:bg-navy-light text-white px-4 py-3 rounded-full shadow-2xl border-2 border-saffron flex items-center space-x-2.5 transition-all hover:scale-105 group cursor-pointer"
-        aria-label="Open Live Sahayak Chat"
-      >
-        <div className="relative">
-          <MessageSquare className="w-5 h-5 text-saffron" />
-          <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-heritage-green animate-ping" />
-          <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-heritage-green" />
-        </div>
-        <div className="text-left hidden sm:block">
-          <div className="text-xs font-bold leading-tight">योजनासाथी Sahayak</div>
-          <div className="text-[10px] text-saffron font-medium leading-tight">Live Chat Desk</div>
-        </div>
-      </button>
+        onOpenVoice={() => {
+          setChatSchemeContext(null);
+          setStartWithVoice(true);
+          setIsNexconnChatOpen(true);
+        }}
+      />
 
-      {/* Nexconn Real-Time Chat Modal */}
+      {/* Nexconn Real-Time Chat Modal with Voice Assistant */}
       <NexconnChatModal
         isOpen={isNexconnChatOpen}
-        onClose={() => setIsNexconnChatOpen(false)}
+        onClose={() => {
+          setIsNexconnChatOpen(false);
+          setStartWithVoice(false);
+        }}
         initialScheme={chatSchemeContext}
+        startWithVoice={startWithVoice}
       />
 
     </div>
@@ -215,6 +215,7 @@ function SchemePage() {
   const navigate = useNavigate();
   const [isQuestionnaireOpen, setIsQuestionnaireOpen] = useState(false);
   const [isNexconnChatOpen, setIsNexconnChatOpen] = useState(false);
+  const [startWithVoice, setStartWithVoice] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [currentLanguage, setCurrentLanguage] = useState('en');
 
@@ -239,26 +240,25 @@ function SchemePage() {
         onClose={() => setIsQuestionnaireOpen(false)}
       />
 
-      {/* Floating Nexconn Live Sahayak Button */}
-      <button
-        onClick={() => setIsNexconnChatOpen(true)}
-        className="fixed bottom-6 right-6 z-40 bg-navy hover:bg-navy-light text-white px-4 py-3 rounded-full shadow-2xl border-2 border-saffron flex items-center space-x-2.5 transition-all hover:scale-105 group cursor-pointer"
-        aria-label="Open Live Sahayak Chat"
-      >
-        <div className="relative">
-          <MessageSquare className="w-5 h-5 text-saffron" />
-          <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-heritage-green animate-ping" />
-          <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-heritage-green" />
-        </div>
-        <div className="text-left hidden sm:block">
-          <div className="text-xs font-bold leading-tight">योजनासाथी Sahayak</div>
-          <div className="text-[10px] text-saffron font-medium leading-tight">Live Chat Desk</div>
-        </div>
-      </button>
+      {/* Floating Sahayak & Voice Assistant Button */}
+      <FloatingSahayakButton
+        onOpenChat={() => {
+          setStartWithVoice(false);
+          setIsNexconnChatOpen(true);
+        }}
+        onOpenVoice={() => {
+          setStartWithVoice(true);
+          setIsNexconnChatOpen(true);
+        }}
+      />
 
       <NexconnChatModal
         isOpen={isNexconnChatOpen}
-        onClose={() => setIsNexconnChatOpen(false)}
+        onClose={() => {
+          setIsNexconnChatOpen(false);
+          setStartWithVoice(false);
+        }}
+        startWithVoice={startWithVoice}
       />
     </div>
   );

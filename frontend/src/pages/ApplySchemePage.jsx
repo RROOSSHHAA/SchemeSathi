@@ -4,6 +4,7 @@ import TopHeader from '../components/layout/TopHeader.jsx';
 import SubNavBar from '../components/layout/SubNavBar.jsx';
 import PortalFooter from '../components/layout/PortalFooter.jsx';
 import NexconnChatModal from '../components/chat/NexconnChatModal.jsx';
+import FloatingSahayakButton from '../components/chat/FloatingSahayakButton.jsx';
 import { 
   ExternalLink, 
   CheckCircle2, 
@@ -13,7 +14,8 @@ import {
   Building2, 
   MessageSquare,
   ArrowRight,
-  Info
+  Info,
+  Mic
 } from 'lucide-react';
 import { SCHEMES_BY_CATEGORY } from '../data/schemesCatalogue.js';
 
@@ -29,6 +31,7 @@ export default function ApplySchemePage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentLanguage, setCurrentLanguage] = useState('en');
   const [isNexconnChatOpen, setIsNexconnChatOpen] = useState(false);
+  const [startWithVoice, setStartWithVoice] = useState(false);
   const [chatSchemeContext, setChatSchemeContext] = useState(null);
 
   const currentCategoryData = SCHEMES_BY_CATEGORY[formData.schemeCategory] || SCHEMES_BY_CATEGORY.education;
@@ -79,12 +82,25 @@ export default function ApplySchemePage() {
             <button
               onClick={() => {
                 setChatSchemeContext(null);
+                setStartWithVoice(true);
+                setIsNexconnChatOpen(true);
+              }}
+              className="px-3.5 py-2.5 bg-saffron hover:bg-saffron-dark text-navy text-xs font-bold rounded-lg flex items-center space-x-1.5 shadow-xs transition cursor-pointer"
+              title="Voice Assistant • बोलकर पूछें"
+            >
+              <Mic className="w-4 h-4 text-navy" />
+              <span>Voice Assistant</span>
+            </button>
+            <button
+              onClick={() => {
+                setChatSchemeContext(null);
+                setStartWithVoice(false);
                 setIsNexconnChatOpen(true);
               }}
               className="px-4 py-2.5 bg-navy hover:bg-navy-light text-white text-xs font-semibold rounded-lg flex items-center space-x-2 shadow-xs transition cursor-pointer"
             >
               <MessageSquare className="w-4 h-4 text-saffron" />
-              <span>Ask Live Sahayak (Nexconn)</span>
+              <span>Live Sahayak</span>
             </button>
           </div>
         </div>
@@ -301,11 +317,29 @@ export default function ApplySchemePage() {
       {/* Footer */}
       <PortalFooter />
 
+      {/* Floating Sahayak & Voice Assistant Button */}
+      <FloatingSahayakButton
+        onOpenChat={() => {
+          setChatSchemeContext(null);
+          setStartWithVoice(false);
+          setIsNexconnChatOpen(true);
+        }}
+        onOpenVoice={() => {
+          setChatSchemeContext(null);
+          setStartWithVoice(true);
+          setIsNexconnChatOpen(true);
+        }}
+      />
+
       {/* Nexconn Live Chat Modal */}
       <NexconnChatModal
         isOpen={isNexconnChatOpen}
-        onClose={() => setIsNexconnChatOpen(false)}
+        onClose={() => {
+          setIsNexconnChatOpen(false);
+          setStartWithVoice(false);
+        }}
         initialScheme={chatSchemeContext}
+        startWithVoice={startWithVoice}
       />
 
     </div>
