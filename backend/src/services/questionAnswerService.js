@@ -8,6 +8,13 @@ const STOP_WORDS = new Set([
   'kya', 'koi', 'hai', 'he', 'ki', 'ka', 'ke', 'ko', 'mein', 'me', 'mujhe',
   'batao', 'bataiye', 'kare', 'karu', 'aai', 'aayi', 'aaya', 'kya'
 ]);
+const TERM_GROUPS = [
+  ['new', 'newly', 'latest', 'recent', 'recently', 'launch', 'launched', 'announce', 'announced', 'introduce', 'introduced', 'naya', 'nayi', 'naye'],
+  ['scheme', 'schemes', 'yojana', 'yojanas', 'programme', 'program', 'initiative', 'initiatives']
+];
+const TERM_ALIASES = new Map(
+  TERM_GROUPS.flatMap(group => group.map(term => [term, group]))
+);
 
 export function buildGovernmentSearchQuery(question, intent) {
   const currentYear = new Date().getFullYear();
@@ -71,7 +78,23 @@ function getQuestionTerms(question) {
   return new Set(
     (question.toLowerCase().match(/[\p{L}\p{N}]+/gu) || [])
       .filter(term => term.length > 2 && !STOP_WORDS.has(term))
+      .map(normalizeTerm)
   );
+}
+
+function normalizeTerm(term) {
+  if (term.length > 4 && term.endsWith('ies')) return `${term.slice(0, -3)}y`;
+  if (term.length > 4 && term.endsWith('s')) return term.slice(0, -1);
+  return term;
+}
+
+function getTerms(text) {
+  return new Set((text.toLowerCase().match(/[\p{L}\p{N}]+/gu) || []).map(normalizeTerm));
+}
+
+function includesQuestionTerm(contentTerms, term) {
+  const aliases = TERM_ALIASES.get(term) || [term];
+  return aliases.some(alias => contentTerms.has(normalizeTerm(alias)));
 }
 
 function rankResults(question, results) {
@@ -79,10 +102,12 @@ function rankResults(question, results) {
 
   return results
     .map((result, index) => {
-      const titleTerms = new Set((result.title.toLowerCase().match(/[\p{L}\p{N}]+/gu) || []));
-      const contentTerms = new Set((result.snippet.toLowerCase().match(/[\p{L}\p{N}]+/gu) || []));
+      const titleTerms = getTerms(result.title);
+      const contentTerms = getTerms(result.snippet);
       const score = [...questionTerms].reduce(
-        (total, term) => total + (titleTerms.has(term) ? 3 : 0) + (contentTerms.has(term) ? 1 : 0),
+        (total, term) => total +
+          (includesQuestionTerm(titleTerms, term) ? 3 : 0) +
+          (includesQuestionTerm(contentTerms, term) ? 1 : 0),
         0
       );
 

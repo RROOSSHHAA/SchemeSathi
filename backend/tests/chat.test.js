@@ -89,6 +89,21 @@ describe('SchemeSathi evidence-based chat', () => {
     assert.equal(answer.citations[0].url, 'https://www.pib.gov.in/farmer-scheme');
   });
 
+  test('matches Hinglish scheme words to plural and English official-source wording', () => {
+    const answer = buildQuestionAnswer('Koi nayi yojana aai he?', {
+      sourceStatus: { youcom: 'unconfigured', serpapi: 'ok' },
+      results: [{
+        title: 'Recently Announced Government Schemes',
+        url: 'https://www.pib.gov.in/recent-schemes',
+        source: 'www.pib.gov.in',
+        snippet: 'Newly launched programmes for eligible households.'
+      }]
+    });
+
+    assert.match(answer.text, /Recently Announced Government Schemes/);
+    assert.equal(answer.citations.length, 1);
+  });
+
   test('does not use unrelated results or generic canned documents advice', () => {
     const answer = buildQuestionAnswer('PM Kisan installment status', {
       sourceStatus: { youcom: 'ok', serpapi: 'no_results' },
