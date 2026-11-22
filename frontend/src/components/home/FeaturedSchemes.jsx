@@ -13,7 +13,14 @@ export default function FeaturedSchemes({ onSelectScheme }) {
       benefit: 'Zero balance account + ₹2 Lakh accidental insurance + ₹10,000 overdraft facility.',
       eligibility: 'Any Indian citizen aged 10+ without a basic savings account.',
       officialUrl: 'https://pmjdy.gov.in',
-      department: 'Department of Financial Services, Ministry of Finance'
+      department: 'Department of Financial Services, Ministry of Finance',
+      documents: [
+        'Aadhaar card',
+        'PAN card or Form 60',
+        'Voter ID or address proof',
+        'Two passport-size photographs',
+        'Mobile number'
+      ]
     },
     {
       id: 'pmjay',
@@ -25,7 +32,14 @@ export default function FeaturedSchemes({ onSelectScheme }) {
       benefit: '₹5,00,000 cashless health insurance coverage per eligible family per year across empaneled public & private hospitals.',
       eligibility: 'Deprived rural families & identified occupational urban categories as per SECC database.',
       officialUrl: 'https://pmjay.gov.in',
-      department: 'National Health Authority (NHA), Ministry of Health'
+      department: 'National Health Authority (NHA), Ministry of Health',
+      documents: [
+        'Aadhaar or Aadhaar enrolment ID',
+        'Ration card or SECC beneficiary ID',
+        'Family identification document',
+        'Income or BPL certificate, if applicable',
+        'Active mobile number'
+      ]
     }
   ];
 

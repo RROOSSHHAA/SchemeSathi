@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import TopHeader from './components/layout/TopHeader.jsx';
 import SubNavBar from './components/layout/SubNavBar.jsx';
 import HeroBanner from './components/home/HeroBanner.jsx';
@@ -9,9 +9,12 @@ import ImportantLinks from './components/home/ImportantLinks.jsx';
 import PortalFooter from './components/layout/PortalFooter.jsx';
 import SchemeDetailModal from './components/home/SchemeDetailModal.jsx';
 import QuickQuestionnaireModal from './components/home/QuickQuestionnaireModal.jsx';
+import StateSchemeDirectory from './components/home/StateSchemeDirectory.jsx';
+import SchemeDirectory from './components/home/SchemeDirectory.jsx';
 import api from './services/api.js';
 
 function HomePage() {
+  const navigate = useNavigate();
   const [selectedScheme, setSelectedScheme] = useState(null);
   const [isQuestionnaireOpen, setIsQuestionnaireOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -33,12 +36,9 @@ function HomePage() {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    if (!searchQuery.trim()) return;
-    setNotification(`Searching official registry for: "${searchQuery}"...`);
-    setTimeout(() => {
-      setIsQuestionnaireOpen(true);
-      setNotification(null);
-    }, 600);
+    const query = searchQuery.trim();
+    if (!query) return;
+    navigate(`/schemes?q=${encodeURIComponent(query)}`);
   };
 
   const handleActionClick = (action) => {
@@ -53,7 +53,13 @@ function HomePage() {
         summary: 'World\'s largest healthcare assurance scheme offering ₹5 Lakh cover per eligible family per year across secondary and tertiary medical treatments.',
         benefit: '₹5,00,000 cashless family health protection per year.',
         eligibility: 'Identified rural deprivation criteria and urban occupational categories under SECC database.',
-        officialUrl: 'https://pmjay.gov.in'
+        officialUrl: 'https://pmjay.gov.in',
+        documents: [
+          'Aadhaar or Aadhaar enrolment ID',
+          'Ration card or SECC beneficiary ID',
+          'Family identification document',
+          'Active mobile number'
+        ]
       });
     } else if (action === 'security') {
       setNotification('Security Status: Zero Aadhaar OTPs or UPI PINs collected. Strict RLS and Helmet protection active.');
@@ -118,6 +124,8 @@ function HomePage() {
             />
           </div>
 
+          <StateSchemeDirectory />
+
           {/* Column 2: Latest News & Announcements (approx 4 cols on lg) */}
           <div className="lg:col-span-4">
             <NewsAnnouncements 
@@ -161,10 +169,41 @@ function HomePage() {
   );
 }
 
+function SchemePage() {
+  const navigate = useNavigate();
+  const [isQuestionnaireOpen, setIsQuestionnaireOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentLanguage, setCurrentLanguage] = useState('en');
+
+  return (
+    <div className="min-h-screen bg-alabaster flex flex-col font-sans text-charcoal">
+      <TopHeader
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        onSearchSubmit={(event) => {
+          event.preventDefault();
+          const query = searchQuery.trim();
+          if (query) navigate(`/schemes?q=${encodeURIComponent(query)}`);
+        }}
+        currentLanguage={currentLanguage}
+        onLanguageChange={setCurrentLanguage}
+      />
+      <SubNavBar />
+      <SchemeDirectory onOpenQuestionnaire={() => setIsQuestionnaireOpen(true)} />
+      <PortalFooter />
+      <QuickQuestionnaireModal
+        isOpen={isQuestionnaireOpen}
+        onClose={() => setIsQuestionnaireOpen(false)}
+      />
+    </div>
+  );
+}
+
 export default function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/schemes" element={<SchemePage />} />
       <Route path="*" element={<HomePage />} />
     </Routes>
   );

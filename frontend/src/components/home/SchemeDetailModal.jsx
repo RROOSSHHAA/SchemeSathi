@@ -76,22 +76,19 @@ export default function SchemeDetailModal({ scheme, onClose, onCheckEligibility 
               <span>Standard Required Documents</span>
             </h4>
             <ul className="grid sm:grid-cols-2 gap-2 text-xs text-govmuted">
-              <li className="flex items-center space-x-1.5 bg-alabaster p-2 rounded border border-govborder">
-                <span className="w-1.5 h-1.5 rounded-full bg-heritage-green"></span>
-                <span>Aadhaar Card (Identity Proof)</span>
-              </li>
-              <li className="flex items-center space-x-1.5 bg-alabaster p-2 rounded border border-govborder">
-                <span className="w-1.5 h-1.5 rounded-full bg-heritage-green"></span>
-                <span>Income Certificate / Ration Card</span>
-              </li>
-              <li className="flex items-center space-x-1.5 bg-alabaster p-2 rounded border border-govborder">
-                <span className="w-1.5 h-1.5 rounded-full bg-heritage-green"></span>
-                <span>Domicile Certificate (Maharashtra)</span>
-              </li>
-              <li className="flex items-center space-x-1.5 bg-alabaster p-2 rounded border border-govborder">
-                <span className="w-1.5 h-1.5 rounded-full bg-heritage-green"></span>
-                <span>Active Bank Passbook</span>
-              </li>
+              {(scheme.documents || [
+                'Aadhaar card',
+                'Income certificate',
+                'Domicile or residence certificate',
+                'Active bank passbook',
+                'Passport-size photographs',
+                'Mobile number'
+              ]).map((document) => (
+                <li key={document} className="flex items-center space-x-1.5 bg-alabaster p-2 rounded border border-govborder">
+                  <span className="w-1.5 h-1.5 rounded-full bg-heritage-green"></span>
+                  <span>{document}</span>
+                </li>
+              ))}
             </ul>
           </div>
 

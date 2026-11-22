@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
 import { Search, Globe, Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import EmblemLogo from '../common/EmblemLogo.jsx';
+import { schemeCatalog } from '../home/SchemeDirectory.jsx';
 
 export default function TopHeader({ searchQuery, setSearchQuery, onSearchSubmit, onLanguageChange, currentLanguage }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const normalizedQuery = searchQuery.trim().toLowerCase();
+  const suggestions = normalizedQuery
+    ? schemeCatalog.filter((scheme) =>
+        `${scheme.name} ${scheme.description} ${scheme.keywords || ''}`.toLowerCase().includes(normalizedQuery)
+      ).slice(0, 6)
+    : [];
 
   return (
     <header className="bg-navy text-white border-b border-navy-light/40 sticky top-0 z-50 shadow-md">
@@ -32,10 +38,20 @@ export default function TopHeader({ searchQuery, setSearchQuery, onSearchSubmit,
           
           {/* Left Brand: State Emblem of India with Satyameva Jayate */}
           <Link to="/" className="flex items-center group py-0.5">
-            <EmblemLogo 
-              className="w-10 h-13 sm:w-11 sm:h-14 text-white group-hover:text-saffron-light transition"
-              subtitle="Government of India"
-            />
+            <div className="flex items-center space-x-3 select-none">
+              <img
+                src="/assets/satyameva-jayate.webp"
+                alt="Satyameva Jayate"
+                className="w-10 h-14 sm:w-12 sm:h-16 object-contain bg-white rounded-md p-1"
+              />
+              <div className="flex flex-col leading-tight">
+                <span className="text-base sm:text-lg font-bold tracking-tight font-serif text-white">भारत सरकार</span>
+                <span className="text-xs sm:text-sm font-semibold tracking-wide text-gray-200">Government of India</span>
+                <span className="text-[10px] sm:text-[11px] text-saffron font-medium tracking-wider uppercase mt-0.5">
+                  SchemeSathi AI • Citizen Services Portal
+                </span>
+              </div>
+            </div>
           </Link>
 
           {/* Desktop Right Controls: Navigation, Language, and Search Input */}
@@ -100,6 +116,20 @@ export default function TopHeader({ searchQuery, setSearchQuery, onSearchSubmit,
               >
                 <Search className="w-4 h-4" />
               </button>
+              {suggestions.length > 0 && (
+                <div className="absolute z-[60] left-0 right-0 top-full mt-1 bg-white rounded-md border border-govborder shadow-xl overflow-hidden">
+                  {suggestions.map((scheme) => (
+                    <Link
+                      key={scheme.name}
+                      to={`/schemes?q=${encodeURIComponent(scheme.name)}`}
+                      className="block px-3 py-2.5 border-b border-govborder last:border-b-0 hover:bg-alabaster"
+                    >
+                      <span className="block text-xs font-bold text-navy">{scheme.name}</span>
+                      <span className="block text-[10px] text-govmuted mt-0.5 line-clamp-1">{scheme.description}</span>
+                    </Link>
+                  ))}
+                </div>
+              )}
             </form>
           </div>
 
@@ -134,6 +164,21 @@ export default function TopHeader({ searchQuery, setSearchQuery, onSearchSubmit,
               >
                 <Search className="w-4 h-4" />
               </button>
+              {suggestions.length > 0 && (
+                <div className="absolute z-[60] left-0 right-0 top-full mt-1 bg-white rounded-md border border-govborder shadow-xl overflow-hidden">
+                  {suggestions.map((scheme) => (
+                    <Link
+                      key={scheme.name}
+                      to={`/schemes?q=${encodeURIComponent(scheme.name)}`}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="block px-3 py-2.5 border-b border-govborder last:border-b-0"
+                    >
+                      <span className="block text-xs font-bold text-navy">{scheme.name}</span>
+                      <span className="block text-[10px] text-govmuted mt-0.5">{scheme.description}</span>
+                    </Link>
+                  ))}
+                </div>
+              )}
             </form>
 
             {/* Mobile Nav Links */}

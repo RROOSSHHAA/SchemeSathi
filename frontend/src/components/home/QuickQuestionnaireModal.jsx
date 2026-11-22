@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { X, CheckCircle2, ChevronRight, ChevronLeft, ShieldCheck, Sparkles, AlertCircle } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { X, CheckCircle2, ChevronRight, ChevronLeft, ShieldCheck, Sparkles, ExternalLink } from 'lucide-react';
 
 export default function QuickQuestionnaireModal({ isOpen, onClose }) {
   const [step, setStep] = useState(1);
@@ -15,6 +15,45 @@ export default function QuickQuestionnaireModal({ isOpen, onClose }) {
   });
 
   const [evaluationResult, setEvaluationResult] = useState(null);
+  const [locationData, setLocationData] = useState({ states: [], union_territories: [] });
+
+  useEffect(() => {
+    if (isOpen) {
+      setStep(1);
+      setEvaluationResult(null);
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    fetch('/data/india-locations.json')
+      .then((response) => {
+        if (!response.ok) throw new Error('Unable to load India location data');
+        return response.json();
+      })
+      .then(setLocationData)
+      .catch((error) => console.warn(error.message));
+  }, []);
+
+  const allStates = [
+    ...(locationData.states || []).find((state) => state.name === 'Maharashtra')
+      ? [locationData.states.find((state) => state.name === 'Maharashtra')]
+      : [{ name: 'Maharashtra', districts: ['Pune'] }],
+    ...(locationData.states || []).filter((state) => state.name !== 'Maharashtra'),
+    ...(locationData.union_territories || [])
+  ];
+
+  const selectedLocation = allStates.find((location) => location.name === formData.state);
+  const districtOptions = selectedLocation?.districts || [];
+
+  const handleStateChange = (stateName) => {
+    const stateLocation = allStates.find((location) => location.name === stateName);
+    const districts = stateLocation?.districts || [];
+    setFormData({
+      ...formData,
+      state: stateName,
+      district: districts.includes(formData.district) ? formData.district : (districts[0] || '')
+    });
+  };
 
   if (!isOpen) return null;
 
@@ -37,7 +76,9 @@ export default function QuickQuestionnaireModal({ isOpen, onClose }) {
           `State is Maharashtra (State scheme requirement met)`,
           `Active student status confirmed`
         ],
-        benefits: '50% to 100% tuition and exam fee reimbursement directly to institutional account.'
+        benefits: '50% to 100% tuition and exam fee reimbursement directly to institutional account.',
+        officialUrl: 'https://mahadbt.maharashtra.gov.in',
+        documents: ['Aadhaar card', 'Income certificate', 'Caste certificate, if applicable', 'College admission proof', 'Bank passbook']
       });
     }
 
@@ -51,7 +92,9 @@ export default function QuickQuestionnaireModal({ isOpen, onClose }) {
           `Annual family income falls within healthcare priority brackets`,
           `Secondary and tertiary healthcare cashless cover applicable across empaneled hospitals`
         ],
-        benefits: '₹5,00,000 cashless family health protection per year.'
+        benefits: '₹5,00,000 cashless family health protection per year.',
+        officialUrl: 'https://pmjay.gov.in',
+        documents: ['Aadhaar card', 'Ration card or SECC beneficiary ID', 'Family identification document', 'Mobile number']
       });
     }
 
@@ -65,7 +108,9 @@ export default function QuickQuestionnaireModal({ isOpen, onClose }) {
           `Age (${ageNum}) meets minimum age criterion of 10+`,
           `Basic Savings Bank Deposit (BSBD) account eligibility satisfied`
         ],
-        benefits: 'Zero-balance bank account, free RuPay debit card, ₹2 Lakh accident insurance.'
+        benefits: 'Zero-balance bank account, free RuPay debit card, ₹2 Lakh accident insurance.',
+        officialUrl: 'https://pmjdy.gov.in',
+        documents: ['Aadhaar card', 'PAN card or Form 60', 'Address proof', 'Passport-size photographs', 'Mobile number']
       });
     }
 
@@ -139,14 +184,14 @@ export default function QuickQuestionnaireModal({ isOpen, onClose }) {
                   <label className="block font-semibold text-navy mb-1">State of Residence</label>
                   <select
                     value={formData.state}
-                    onChange={(e) => setFormData({ ...formData, state: e.target.value })}
+                    onChange={(e) => handleStateChange(e.target.value)}
                     className="w-full border border-govborder rounded p-2 focus:ring-1 focus:ring-navy outline-none bg-white"
                   >
-                    <option value="Maharashtra">Maharashtra (Prioritized)</option>
-                    <option value="Delhi">Delhi</option>
-                    <option value="Karnataka">Karnataka</option>
-                    <option value="Gujarat">Gujarat</option>
-                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                    {allStates.map((location) => (
+                      <option key={location.name} value={location.name}>
+                        {location.name === 'Maharashtra' ? `${location.name} (Prioritized)` : location.name}
+                      </option>
+                    ))}
                   </select>
                   <span className="text-[10px] text-govmuted">Determines state-specific welfare rules</span>
                 </div>
@@ -155,13 +200,15 @@ export default function QuickQuestionnaireModal({ isOpen, onClose }) {
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block font-semibold text-navy mb-1">District</label>
-                  <input
-                    type="text"
+                  <select
                     value={formData.district}
                     onChange={(e) => setFormData({ ...formData, district: e.target.value })}
                     className="w-full border border-govborder rounded p-2 focus:ring-1 focus:ring-navy outline-none"
-                    placeholder="e.g. Pune, Nagpur, Mumbai"
-                  />
+                  >
+                    {districtOptions.map((district) => (
+                      <option key={district} value={district}>{district}</option>
+                    ))}
+                  </select>
                 </div>
 
                 <div>
@@ -258,6 +305,25 @@ export default function QuickQuestionnaireModal({ isOpen, onClose }) {
                     <div className="text-[11px] text-charcoal bg-alabaster p-2 rounded border border-govborder/60">
                       <strong>Benefit:</strong> {res.benefits}
                     </div>
+
+                    {res.documents && (
+                      <div className="text-[10px] text-charcoal-light">
+                        <strong className="text-navy">Required Documents:</strong>{' '}
+                        {res.documents.join(', ')}
+                      </div>
+                    )}
+
+                    {res.officialUrl && (
+                      <a
+                        href={res.officialUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center text-[11px] font-bold text-navy hover:text-saffron-dark"
+                      >
+                        Open Official Scheme Website
+                        <ExternalLink className="w-3.5 h-3.5 ml-1" />
+                      </a>
+                    )}
 
                     <div className="space-y-1">
                       <span className="text-[10px] font-bold text-navy uppercase tracking-wider">

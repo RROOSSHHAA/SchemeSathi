@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import EmblemLogo from '../common/EmblemLogo.jsx';
 
 export default function PortalFooter() {
   return (
@@ -11,9 +10,10 @@ export default function PortalFooter() {
           
           {/* Left: State Emblem of India with Satyameva Jayate */}
           <div className="flex items-center">
-            <EmblemLogo 
-              className="w-12 h-16 text-white" 
-              subtitle="Government of India"
+            <img
+              src="/assets/satyameva-jayate.webp"
+              alt="Satyameva Jayate emblem"
+              className="h-20 w-auto object-contain bg-white rounded-md p-1"
             />
           </div>
 

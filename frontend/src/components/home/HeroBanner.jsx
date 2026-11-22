@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { ArrowRight, ShieldCheck, CheckCircle2 } from 'lucide-react';
 
 export default function HeroBanner({ onOpenQuestionnaire }) {
@@ -54,10 +55,14 @@ export default function HeroBanner({ onOpenQuestionnaire }) {
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 sm:gap-4">
                   
                   {/* Figure 1: Indian Farmer */}
-                  <div className="group relative rounded-xl overflow-hidden bg-gradient-to-t from-navy-dark to-navy border border-saffron/30 hover:border-saffron transition flex flex-col items-center p-3.5 text-center">
+                  <Link
+                    to="/schemes?cat=agriculture"
+                    aria-label="View farmer welfare schemes"
+                    className="group relative rounded-xl overflow-hidden bg-gradient-to-t from-navy-dark to-navy border border-saffron/30 hover:border-saffron transition flex flex-col items-center p-3.5 text-center"
+                  >
                     <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden border-2 border-saffron/70 mb-3 shadow-lg bg-stone-800 flex-shrink-0">
                       <img 
-                        src="https://images.unsplash.com/photo-1595278069441-2cf29f8005a4?auto=format&fit=crop&w=300&q=80" 
+                        src="/assets/farmer.webp"
                         alt="Indian Farmer Beneficiary"
                         className="w-full h-full object-cover object-top group-hover:scale-105 transition duration-300"
                         loading="lazy"
@@ -65,13 +70,17 @@ export default function HeroBanner({ onOpenQuestionnaire }) {
                     </div>
                     <span className="text-xs font-bold text-white tracking-wide">Farmer Welfare</span>
                     <span className="text-[10px] text-saffron mt-0.5 font-medium">PM Kisan & Subsidies</span>
-                  </div>
+                  </Link>
 
                   {/* Figure 2: Girl Student */}
-                  <div className="group relative rounded-xl overflow-hidden bg-gradient-to-t from-navy-dark to-navy border border-saffron/30 hover:border-saffron transition flex flex-col items-center p-3.5 text-center">
+                  <Link
+                    to="/schemes?cat=education"
+                    aria-label="View student and youth DBT scholarship schemes"
+                    className="group relative rounded-xl overflow-hidden bg-gradient-to-t from-navy-dark to-navy border border-saffron/30 hover:border-saffron transition flex flex-col items-center p-3.5 text-center"
+                  >
                     <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden border-2 border-saffron/70 mb-3 shadow-lg bg-stone-800 flex-shrink-0">
                       <img 
-                        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" 
+                        src="/assets/students and youth.webp"
                         alt="Student Beneficiary"
                         className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                         loading="lazy"
@@ -79,13 +88,17 @@ export default function HeroBanner({ onOpenQuestionnaire }) {
                     </div>
                     <span className="text-xs font-bold text-white tracking-wide">Students & Youth</span>
                     <span className="text-[10px] text-saffron mt-0.5 font-medium">DBT Scholarships</span>
-                  </div>
+                  </Link>
 
                   {/* Figure 3: Professional Indian Woman */}
-                  <div className="group relative rounded-xl overflow-hidden bg-gradient-to-t from-navy-dark to-navy border border-saffron/30 hover:border-saffron transition flex flex-col items-center p-3.5 text-center">
+                  <Link
+                    to="/schemes?cat=women"
+                    aria-label="View women MSME and SHG support schemes"
+                    className="group relative rounded-xl overflow-hidden bg-gradient-to-t from-navy-dark to-navy border border-saffron/30 hover:border-saffron transition flex flex-col items-center p-3.5 text-center"
+                  >
                     <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden border-2 border-saffron/70 mb-3 shadow-lg bg-stone-800 flex-shrink-0">
                       <img 
-                        src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80" 
+                        src="/assets/women msme.webp"
                         alt="Women Entrepreneur"
                         className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                         loading="lazy"
@@ -93,13 +106,17 @@ export default function HeroBanner({ onOpenQuestionnaire }) {
                     </div>
                     <span className="text-xs font-bold text-white tracking-wide">Women MSME</span>
                     <span className="text-[10px] text-saffron mt-0.5 font-medium">Mudra & SHG Support</span>
-                  </div>
+                  </Link>
 
                   {/* Figure 4: Senior Citizen */}
-                  <div className="group relative rounded-xl overflow-hidden bg-gradient-to-t from-navy-dark to-navy border border-saffron/30 hover:border-saffron transition flex flex-col items-center p-3.5 text-center">
+                  <Link
+                    to="/schemes?cat=senior"
+                    aria-label="View senior citizen pension and healthcare schemes"
+                    className="group relative rounded-xl overflow-hidden bg-gradient-to-t from-navy-dark to-navy border border-saffron/30 hover:border-saffron transition flex flex-col items-center p-3.5 text-center"
+                  >
                     <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden border-2 border-saffron/70 mb-3 shadow-lg bg-stone-800 flex-shrink-0">
                       <img 
-                        src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" 
+                        src="/assets/senior citizens.webp"
                         alt="Senior Citizen Beneficiary"
                         className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                         loading="lazy"
@@ -107,7 +124,7 @@ export default function HeroBanner({ onOpenQuestionnaire }) {
                     </div>
                     <span className="text-xs font-bold text-white tracking-wide">Senior Citizens</span>
                     <span className="text-[10px] text-saffron mt-0.5 font-medium">Pensions & Healthcare</span>
-                  </div>
+                  </Link>
 
                 </div>
 
