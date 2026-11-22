@@ -8,6 +8,7 @@ import healthRoutes from './routes/healthRoutes.js';
 import schemeRoutes from './routes/schemeRoutes.js';
 import chatRoutes from './routes/chatRoutes.js';
 import vaultRoutes from './routes/vaultRoutes.js';
+import trackerRoutes from './routes/trackerRoutes.js';
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.use('/api/v1/health', healthRoutes);
 app.use('/api/v1/schemes', schemeRoutes);
 app.use('/api/v1/chat', chatRoutes);
 app.use('/api/v1/vault', vaultRoutes);
+app.use('/api/v1/tracker', trackerRoutes);
 
 // Root informational endpoint
 app.get('/', (req, res) => {

@@ -29,13 +29,13 @@ export default function SubNavBar({ onOpenApply }) {
             </Link>
           )}
 
-          <a 
-            href="#track" 
+          <Link 
+            to="/tracker" 
             className="flex items-center space-x-1.5 text-gray-200 hover:text-saffron font-medium whitespace-nowrap transition"
           >
             <SearchCheck className="w-3.5 h-3.5 text-saffron" />
             <span>Track Application</span>
-          </a>
+          </Link>
         </div>
 
       </div>

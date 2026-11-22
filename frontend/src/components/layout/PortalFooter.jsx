@@ -23,6 +23,7 @@ export default function PortalFooter() {
             <Link to="/about" className="hover:text-saffron transition">About Us</Link>
             <Link to="/schemes" className="hover:text-saffron transition">Schemes</Link>
             <Link to="/documents" className="hover:text-saffron transition">Documents</Link>
+            <Link to="/tracker" className="hover:text-saffron transition">Track Application</Link>
           </nav>
 
         </div>

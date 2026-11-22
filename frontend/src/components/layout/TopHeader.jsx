@@ -59,6 +59,9 @@ export default function TopHeader({ searchQuery, setSearchQuery, onSearchSubmit,
               <Link to="/documents" className="hover:text-white transition py-1">
                 Documents
               </Link>
+              <Link to="/tracker" className="hover:text-white transition py-1">
+                Track Status
+              </Link>
             </nav>
 
             {/* Language Selector (Google Translate Auto Switcher) */}
@@ -196,6 +199,13 @@ export default function TopHeader({ searchQuery, setSearchQuery, onSearchSubmit,
                 className="px-3 py-2 rounded hover:bg-white/10 text-gray-200"
               >
                 Required Documents
+              </Link>
+              <Link 
+                to="/tracker" 
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-2 rounded hover:bg-white/10 text-gray-200"
+              >
+                Track Status
               </Link>
             </nav>
 

@@ -17,6 +17,7 @@ import ApplySchemeModal from './components/apply/ApplySchemeModal.jsx';
 import ApplySchemePage from './pages/ApplySchemePage.jsx';
 import AboutUsPage from './pages/AboutUsPage.jsx';
 import DocumentsPage from './pages/DocumentsPage.jsx';
+import ApplicationTrackerPage from './pages/ApplicationTrackerPage.jsx';
 import FloatingSahayakButton from './components/chat/FloatingSahayakButton.jsx';
 import { getCurrentLanguage } from './services/languageService.js';
 import { MessageSquare } from 'lucide-react';
@@ -218,6 +219,7 @@ export default function App() {
         <Route path="/about" element={<AboutUsPage />} />
         <Route path="/schemes" element={<SchemePage />} />
         <Route path="/documents" element={<DocumentsPage />} />
+        <Route path="/tracker" element={<ApplicationTrackerPage />} />
         <Route path="/questionnaire" element={<ApplySchemePage />} />
         <Route path="/apply" element={<ApplySchemePage />} />
         <Route path="*" element={<HomePage />} />
