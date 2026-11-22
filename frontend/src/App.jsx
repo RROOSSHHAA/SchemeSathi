@@ -5,12 +5,14 @@ import SubNavBar from './components/layout/SubNavBar.jsx';
 import HeroBanner from './components/home/HeroBanner.jsx';
 import FeaturedSchemes from './components/home/FeaturedSchemes.jsx';
 import NewsAnnouncements from './components/home/NewsAnnouncements.jsx';
+import ImportantLinks from './components/home/ImportantLinks.jsx';
 import PortalFooter from './components/layout/PortalFooter.jsx';
 import SchemeDetailModal from './components/home/SchemeDetailModal.jsx';
 import QuickQuestionnaireModal from './components/home/QuickQuestionnaireModal.jsx';
 import StateSchemeDirectory from './components/home/StateSchemeDirectory.jsx';
 import SchemeDirectory from './components/home/SchemeDirectory.jsx';
 import NexconnChatModal from './components/chat/NexconnChatModal.jsx';
+import NexconnChatBot from './components/chat/NexconnChatBot.jsx';
 import ApplySchemeModal from './components/apply/ApplySchemeModal.jsx';
 import ApplySchemePage from './pages/ApplySchemePage.jsx';
 import AboutUsPage from './pages/AboutUsPage.jsx';
@@ -23,10 +25,11 @@ function HomePage() {
   const navigate = useNavigate();
   const [selectedScheme, setSelectedScheme] = useState(null);
   const [isQuestionnaireOpen, setIsQuestionnaireOpen] = useState(false);
-  const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
   const [isNexconnChatOpen, setIsNexconnChatOpen] = useState(false);
   const [startWithVoice, setStartWithVoice] = useState(false);
   const [chatSchemeContext, setChatSchemeContext] = useState(null);
+  const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
+  const [activeApplyScheme, setActiveApplyScheme] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [currentLanguage, setCurrentLanguage] = useState('en');
   const [backendHealth, setBackendHealth] = useState(null);
@@ -49,6 +52,11 @@ function HomePage() {
     const query = searchQuery.trim();
     if (!query) return;
     navigate(`/schemes?q=${encodeURIComponent(query)}`);
+  };
+
+  const handleApplyClick = (scheme) => {
+    setActiveApplyScheme(scheme);
+    setIsApplyModalOpen(true);
   };
 
   const handleActionClick = (action) => {
@@ -82,8 +90,6 @@ function HomePage() {
 
   return (
     <div className="min-h-screen bg-alabaster flex flex-col font-sans text-charcoal">
-      
-      {/* 1. Official Government-Style Top Header with Satyameva Jayate Logo */}
       <TopHeader 
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -91,11 +97,8 @@ function HomePage() {
         currentLanguage={currentLanguage}
         onLanguageChange={setCurrentLanguage}
       />
+      <SubNavBar />
 
-      {/* 2. Sub-Navigation Bar */}
-      <SubNavBar onOpenApply={() => setIsApplyModalOpen(true)} />
-
-      {/* Ephemeral Alert Bar if triggered */}
       {notification && (
         <div className="bg-saffron text-navy px-4 py-2.5 text-xs font-semibold text-center border-b border-navy/20 animate-fade-in flex items-center justify-center space-x-2">
           <span>🔔</span>
@@ -103,15 +106,11 @@ function HomePage() {
         </div>
       )}
 
-      {/* 3. Hero Section matching reference image with generous negative space */}
       <HeroBanner 
         onOpenQuestionnaire={() => setIsQuestionnaireOpen(true)} 
       />
 
-      {/* 4. Main Content Area with Generous Negative Space & Responsive Grid */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-16 flex-1 w-full space-y-8">
-        
-        {/* Backend Connectivity Status Pill */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-govmuted bg-white px-4 py-3 rounded-lg border border-govborder shadow-xs">
           <div className="flex items-center space-x-2.5">
             <span className={`w-2.5 h-2.5 rounded-full ${backendHealth?.status === 'operational' ? 'bg-heritage-green animate-pulse' : 'bg-govwarning'}`}></span>
@@ -121,17 +120,15 @@ function HomePage() {
           </div>
         </div>
 
-        {/* 2-Column Balanced Responsive Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-          
-          {/* Column 1: Featured Schemes (approx 7 cols on lg) */}
           <div className="lg:col-span-7">
             <FeaturedSchemes 
               onSelectScheme={(scheme) => setSelectedScheme(scheme)} 
             />
           </div>
 
-          {/* Column 2: Latest News & Announcements (approx 5 cols on lg) */}
+          <StateSchemeDirectory />
+
           <div className="lg:col-span-5">
             <NewsAnnouncements 
               onSelectAnnouncement={(item) => {
@@ -140,20 +137,11 @@ function HomePage() {
               }}
             />
           </div>
-
-          {/* Full-width State & Union Territory directory */}
-          <div className="lg:col-span-12">
-            <StateSchemeDirectory />
-          </div>
-
         </div>
-
       </main>
 
-      {/* 5. Official Government-Style Portal Footer */}
       <PortalFooter />
 
-      {/* Interactive Modals */}
       <SchemeDetailModal 
         scheme={selectedScheme}
         onClose={() => setSelectedScheme(null)}
@@ -167,46 +155,24 @@ function HomePage() {
         }}
       />
 
-      <QuickQuestionnaireModal 
+      <QuickQuestionnaireModal
         isOpen={isQuestionnaireOpen}
         onClose={() => setIsQuestionnaireOpen(false)}
       />
 
-      {/* Apply for Scheme Interactive Modal (Details + Scheme For Dropdown + Clickable Links) */}
       <ApplySchemeModal
         isOpen={isApplyModalOpen}
         onClose={() => setIsApplyModalOpen(false)}
-        onOpenChat={(scheme) => {
-          setChatSchemeContext(scheme);
-          setIsNexconnChatOpen(true);
-        }}
+        scheme={activeApplyScheme}
       />
 
-      {/* Floating Sahayak & Voice Assistant Button */}
-      <FloatingSahayakButton
-        onOpenChat={() => {
-          setChatSchemeContext(null);
-          setStartWithVoice(false);
-          setIsNexconnChatOpen(true);
-        }}
-        onOpenVoice={() => {
-          setChatSchemeContext(null);
-          setStartWithVoice(true);
-          setIsNexconnChatOpen(true);
-        }}
-      />
-
-      {/* Nexconn Real-Time Chat Modal with Voice Assistant */}
-      <NexconnChatModal
-        isOpen={isNexconnChatOpen}
-        onClose={() => {
-          setIsNexconnChatOpen(false);
-          setStartWithVoice(false);
-        }}
-        initialScheme={chatSchemeContext}
-        startWithVoice={startWithVoice}
-      />
-
+      {isNexconnChatOpen && (
+        <NexconnChatModal
+          isOpen={isNexconnChatOpen}
+          onClose={() => setIsNexconnChatOpen(false)}
+          initialSchemeContext={chatSchemeContext}
+        />
+      )}
     </div>
   );
 }
@@ -214,8 +180,6 @@ function HomePage() {
 function SchemePage() {
   const navigate = useNavigate();
   const [isQuestionnaireOpen, setIsQuestionnaireOpen] = useState(false);
-  const [isNexconnChatOpen, setIsNexconnChatOpen] = useState(false);
-  const [startWithVoice, setStartWithVoice] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [currentLanguage, setCurrentLanguage] = useState('en');
 
@@ -239,41 +203,23 @@ function SchemePage() {
         isOpen={isQuestionnaireOpen}
         onClose={() => setIsQuestionnaireOpen(false)}
       />
-
-      {/* Floating Sahayak & Voice Assistant Button */}
-      <FloatingSahayakButton
-        onOpenChat={() => {
-          setStartWithVoice(false);
-          setIsNexconnChatOpen(true);
-        }}
-        onOpenVoice={() => {
-          setStartWithVoice(true);
-          setIsNexconnChatOpen(true);
-        }}
-      />
-
-      <NexconnChatModal
-        isOpen={isNexconnChatOpen}
-        onClose={() => {
-          setIsNexconnChatOpen(false);
-          setStartWithVoice(false);
-        }}
-        startWithVoice={startWithVoice}
-      />
     </div>
   );
 }
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/about" element={<AboutUsPage />} />
-      <Route path="/schemes" element={<SchemePage />} />
-      <Route path="/documents" element={<DocumentsPage />} />
-      <Route path="/questionnaire" element={<ApplySchemePage />} />
-      <Route path="/apply" element={<ApplySchemePage />} />
-      <Route path="*" element={<HomePage />} />
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<AboutUsPage />} />
+        <Route path="/schemes" element={<SchemePage />} />
+        <Route path="/documents" element={<DocumentsPage />} />
+        <Route path="/questionnaire" element={<ApplySchemePage />} />
+        <Route path="/apply" element={<ApplySchemePage />} />
+        <Route path="*" element={<HomePage />} />
+      </Routes>
+      <NexconnChatBot />
+    </>
   );
 }
