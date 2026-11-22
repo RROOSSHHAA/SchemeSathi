@@ -1,15 +1,14 @@
-# Multi-stage production Dockerfile for SchemeSathi Backend
+# Production Dockerfile for SchemeSathi Backend
 FROM node:20-alpine AS runner
 
 WORKDIR /app
 
-# Set production environment
 ENV NODE_ENV=production
 ENV PORT=8000
 
 # Copy package files and install production dependencies
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm install --omit=dev --no-audit --no-fund
 
 # Copy source code
 COPY src ./src

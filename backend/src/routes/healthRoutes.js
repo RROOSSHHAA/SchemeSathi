@@ -5,32 +5,31 @@ import { supabase } from '../config/supabase.js';
 const router = Router();
 
 router.get('/', async (req, res) => {
-  let dbConnected = false;
-  let dbLatencyMs = null;
+  let database = {
+    configured: serviceStatus.supabase,
+    connected: false,
+    table: 'schemes'
+  };
 
   if (supabase) {
-    try {
-      const start = Date.now();
-      const { data, error } = await supabase.from('schemes').select('id').limit(1);
-      dbLatencyMs = Date.now() - start;
-      dbConnected = !error && Boolean(data);
-    } catch {
-      dbConnected = false;
-    }
+    const { error } = await supabase.from('schemes').select('code', { head: true, count: 'exact' });
+    database.connected = !error;
+    if (error) database.error = error.message;
   }
 
-  res.status(200).json({
-    success: true,
+  const databaseHealthy = !database.configured || database.connected;
+  res.status(databaseHealthy ? 200 : 503).json({
+    success: databaseHealthy,
     data: {
       service: 'SchemeSathi AI API',
-      status: 'operational',
+      status: databaseHealthy ? 'operational' : 'degraded',
       environment: env.NODE_ENV,
       timestamp: new Date().toISOString(),
       database: {
         provider: 'Supabase (PostgreSQL)',
         configured: serviceStatus.supabase,
-        connected: dbConnected,
-        latency_ms: dbLatencyMs
+        connected: database.connected,
+        error: database.error || null
       },
       integrations: {
         database_configured: serviceStatus.supabase,

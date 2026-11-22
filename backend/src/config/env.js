@@ -45,6 +45,16 @@ if (!parsed.success) {
 
 export const env = parsed.data;
 
+if (env.NODE_ENV === 'production') {
+  const missing = [];
+  if (!env.SUPABASE_URL) missing.push('SUPABASE_URL');
+  if (!env.SUPABASE_ANON_KEY) missing.push('SUPABASE_ANON_KEY');
+
+  if (missing.length > 0) {
+    console.warn(`⚠️ Running with DemoShield fallback due to missing production keys: ${missing.join(', ')}`);
+  }
+}
+
 export const serviceStatus = {
   supabase: Boolean(env.SUPABASE_URL && env.SUPABASE_ANON_KEY),
   supabaseServiceRole: Boolean(env.SUPABASE_URL && env.SUPABASE_SERVICE_ROLE_KEY),

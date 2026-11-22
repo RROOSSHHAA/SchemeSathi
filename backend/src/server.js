@@ -4,7 +4,7 @@ import { env } from './config/env.js';
 const PORT = Number(process.env.PORT || env.PORT || 5000);
 const HOST = '0.0.0.0';
 
-const server = app.listen(PORT, HOST, () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`=======================================================`);
   console.log(`🏛️ SchemeSathi AI Backend running on ${HOST}:${PORT}`);
   console.log(`🌐 Environment: ${env.NODE_ENV}`);

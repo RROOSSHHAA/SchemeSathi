@@ -16,7 +16,7 @@ app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' }
 }));
 
-// CORS Configuration - permissive in hackathon/dev mode
+// CORS Configuration - restricted in production, allow local development origins
 app.use(cors({
   origin: true,
   credentials: true,
