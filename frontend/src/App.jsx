@@ -5,7 +5,6 @@ import SubNavBar from './components/layout/SubNavBar.jsx';
 import HeroBanner from './components/home/HeroBanner.jsx';
 import FeaturedSchemes from './components/home/FeaturedSchemes.jsx';
 import NewsAnnouncements from './components/home/NewsAnnouncements.jsx';
-import ImportantLinks from './components/home/ImportantLinks.jsx';
 import PortalFooter from './components/layout/PortalFooter.jsx';
 import SchemeDetailModal from './components/home/SchemeDetailModal.jsx';
 import QuickQuestionnaireModal from './components/home/QuickQuestionnaireModal.jsx';
@@ -121,11 +120,11 @@ function HomePage() {
           </span>
         </div>
 
-        {/* 3-Column Responsive Grid with Generous Gutters */}
+        {/* 2-Column Balanced Responsive Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
           
-          {/* Column 1: Featured Schemes (approx 5 cols on lg) */}
-          <div className="lg:col-span-5">
+          {/* Column 1: Featured Schemes (approx 7 cols on lg) */}
+          <div className="lg:col-span-7">
             <FeaturedSchemes 
               onSelectScheme={(scheme) => setSelectedScheme(scheme)} 
             />
@@ -133,20 +132,13 @@ function HomePage() {
 
           <StateSchemeDirectory />
 
-          {/* Column 2: Latest News & Announcements (approx 4 cols on lg) */}
-          <div className="lg:col-span-4">
+          {/* Column 2: Latest News & Announcements (approx 5 cols on lg) */}
+          <div className="lg:col-span-5">
             <NewsAnnouncements 
               onSelectAnnouncement={(item) => {
                 setNotification(`Announcement [${item.date}]: ${item.title}`);
                 setTimeout(() => setNotification(null), 4000);
               }}
-            />
-          </div>
-
-          {/* Column 3: Important Quick Links (approx 3 cols on lg) */}
-          <div className="lg:col-span-3">
-            <ImportantLinks 
-              onAction={handleActionClick} 
             />
           </div>
 

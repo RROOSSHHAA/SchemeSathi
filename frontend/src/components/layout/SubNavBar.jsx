@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
   CreditCard, 
-  FolderLock, 
   SearchCheck, 
   GraduationCap, 
   Sprout, 
@@ -34,13 +33,6 @@ export default function SubNavBar({ onOpenApply }) {
             </Link>
           )}
 
-          <a 
-            href="#documents" 
-            className="flex items-center space-x-1.5 text-gray-200 hover:text-saffron font-medium whitespace-nowrap transition"
-          >
-            <FolderLock className="w-3.5 h-3.5 text-saffron" />
-            <span>Digital Locker</span>
-          </a>
           <a 
             href="#track" 
             className="flex items-center space-x-1.5 text-gray-200 hover:text-saffron font-medium whitespace-nowrap transition"
